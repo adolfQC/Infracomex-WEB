@@ -1,0 +1,1836 @@
+<title>Web Infracomex</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=Public+Sans:wght@400;500;600;700&display=swap">
+<style>
+:root{
+  --paper:#EEF1EE; --surface:#FFFFFF; --surface-2:#F5F7F5;
+  --ink:#13263A; --ink-2:#44525F; --ink-3:#687783;
+  --line:#CFD7D4; --line-2:#AAB7B4;
+  --accent:#34D399; --accent-ink:#047857; --accent-soft:#D1FAE5;
+  --sea:#0E7490; --sea-soft:#D5F1F7;
+  --ok:#2A744A; --ok-soft:#DCEFE2;
+  --warn:#9A5F0B; --warn-soft:#F7EAD1;
+  --bad:#AA3A33; --bad-soft:#F6DEDB;
+  --note:#AE2E6C; --note-soft:#FBE8F1;
+  --shadow:0 1px 2px rgba(19,38,58,.06),0 8px 24px rgba(19,38,58,.08);
+  --st-bg:#02050B; --st-text:#F1F5F9; --st-body:#B8C4D2; --st-muted:#8FA0B2; --st-accent:#86EFAC;
+  --f-display:"Manrope",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-body:"Public Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --paper:#0D1720; --surface:#14212C; --surface-2:#182834;
+    --ink:#E4EAEE; --ink-2:#A9B6C0; --ink-3:#83929D;
+    --line:#253645; --line-2:#3A4E60;
+    --accent:#86EFAC; --accent-ink:#86EFAC; --accent-soft:#0F2A1F;
+    --sea:#67E8F9; --sea-soft:#0B2E36;
+    --ok:#62C18B; --ok-soft:#163326;
+    --warn:#E6AB4E; --warn-soft:#382B14;
+    --bad:#EA8279; --bad-soft:#3C1E1C;
+    --note:#EC86BA; --note-soft:#35192A;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 28px rgba(0,0,0,.35);
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --paper:#0D1720; --surface:#14212C; --surface-2:#182834;
+  --ink:#E4EAEE; --ink-2:#A9B6C0; --ink-3:#83929D;
+  --line:#253645; --line-2:#3A4E60;
+  --accent:#86EFAC; --accent-ink:#86EFAC; --accent-soft:#0F2A1F;
+  --sea:#67E8F9; --sea-soft:#0B2E36;
+  --ok:#62C18B; --ok-soft:#163326;
+  --warn:#E6AB4E; --warn-soft:#382B14;
+  --bad:#EA8279; --bad-soft:#3C1E1C;
+  --note:#EC86BA; --note-soft:#35192A;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 28px rgba(0,0,0,.35);
+}
+
+*{box-sizing:border-box}
+html{scroll-padding-top:76px}
+body{background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+a{color:inherit}
+p{margin:0}
+h1,h2,h3,h4{margin:0;font-family:var(--f-display);text-wrap:balance;color:var(--ink)}
+h1{font-size:clamp(34px,4.3vw,56px);line-height:1.04;font-weight:700;letter-spacing:-.02em}
+h2{font-size:clamp(27px,3.1vw,40px);line-height:1.1;font-weight:700;letter-spacing:-.018em}
+h3{font-size:20px;line-height:1.25;font-weight:700;letter-spacing:-.01em}
+h4{font-family:var(--f-mono);font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3)}
+.mono{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+.wrap{max-width:1180px;margin-inline:auto;padding-inline:clamp(16px,4vw,40px)}
+.eyebrow{font-family:var(--f-mono);font-size:12.5px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--accent-ink)}
+.lede{font-size:clamp(17px,1.5vw,19px);color:var(--ink-2);max-width:62ch}
+.muted{color:var(--ink-3)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:4px}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+
+/* prototype bar */
+.proto{background:var(--note-soft);border-bottom:1px solid var(--note);color:var(--ink)}
+.proto-in{display:flex;flex-wrap:wrap;gap:6px 16px;align-items:center;justify-content:space-between;padding-block:7px;font-size:13px}
+.proto b{color:var(--note)}
+.notes-btn{font:600 12.5px/1 var(--f-body);color:var(--note);background:transparent;border:1.5px dashed var(--note);border-radius:999px;padding:6px 11px;cursor:pointer;display:inline-flex;gap:8px;align-items:center}
+.notes-btn[aria-pressed="true"]{background:var(--note);color:var(--paper);border-style:solid}
+.notes-btn .dot{width:8px;height:8px;border-radius:50%;background:currentColor}
+@media (max-width:560px){.proto-long{display:none}}
+
+/* header */
+.site-head{position:sticky;top:env(safe-area-inset-top,0px);z-index:30;color:var(--ink);background:var(--paper);background:color-mix(in srgb,var(--paper) 92%,transparent);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-bottom:1px solid var(--line);transition:background .3s ease,color .3s ease}
+.site-head.over{background:transparent;color:#EAF2F8;border-bottom-color:transparent;backdrop-filter:none;-webkit-backdrop-filter:none}
+.site-head.over .head-in{width:min(1000px,calc(100% - 24px));margin:10px auto 0;padding:7px 7px 7px 16px;background:rgba(9,15,26,.52);border:1px solid rgba(255,255,255,.1);border-radius:999px;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+.head-in{display:flex;align-items:center;gap:24px;padding-block:11px}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;margin-right:auto;min-width:0;color:inherit}
+.brand svg{flex:none}
+.brand-txt{display:grid;line-height:1.05;min-width:0}
+.brand-name{font-family:var(--f-display);font-weight:800;font-stretch:125%;font-size:19px;letter-spacing:.04em}
+.brand-sub{font-size:11.5px;opacity:.7;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.nav{display:flex;gap:22px;font-size:14.5px;font-weight:500}
+.nav a{text-decoration:none;opacity:.78}
+.nav a:hover{opacity:1}
+.site-head.over .btn-ink{background:#86EFAC;color:#052E1C}
+@media (max-width:940px){.nav{display:none}}
+@media (max-width:420px){.brand-sub{display:none}}
+
+/* buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font:600 15px/1.1 var(--f-body);padding:13px 18px;border-radius:999px;text-decoration:none;border:1.5px solid transparent;cursor:pointer;transition:transform .15s ease,background .15s ease}
+.btn:hover{transform:translateY(-1px)}
+.btn-ink{background:var(--ink);color:var(--paper)}
+.btn-line{border-color:var(--ink);color:var(--ink);background:transparent}
+.btn-accent{background:var(--accent);color:#052E1C}
+.btn-sm{padding:9px 14px;font-size:14px}
+.btn[disabled]{opacity:.45;cursor:not-allowed;transform:none}
+.btn-ghost{background:transparent;color:var(--ink-2);border-color:var(--line-2)}
+
+/* ============ historia animada ============ */
+.story{position:relative;height:640vh;background:var(--st-bg);margin-top:calc(-1 * var(--head-h,64px))}
+.stage{position:sticky;top:env(safe-area-inset-top,0px);height:100vh;height:100dvh;overflow:hidden;background:var(--st-bg);color:var(--st-text);--cut:0px;--aur:1;--cl:0;--cs:1}
+#gl{position:absolute;inset:0;width:100%;height:100%;display:block}
+.nogl .stage{background:radial-gradient(130% 70% at 50% 122%,#2a86b8 0%,#0d3657 30%,#061728 48%,#02050B 64%)}
+.nogl #gl{display:none}
+.aurora{position:absolute;inset:0;pointer-events:none;opacity:var(--aur);background:radial-gradient(52% 40% at 4% 86%,rgba(74,222,128,.32),transparent 70%),radial-gradient(42% 32% at 24% 78%,rgba(34,211,238,.14),transparent 70%);mix-blend-mode:screen}
+.cloudfx{position:absolute;inset:-25%;pointer-events:none;opacity:var(--cl);transform:scale(var(--cs));background:url(assets/earth-clouds.jpg) 30% 44%/240% auto;mix-blend-mode:screen;filter:brightness(1.5) contrast(1.15)}
+.cloudfx::after{content:"";position:absolute;inset:0;background:radial-gradient(55% 55% at 50% 50%,rgba(210,236,255,.6),rgba(120,180,220,.18) 60%,transparent 82%)}
+.vign{position:absolute;inset:0;pointer-events:none;background:radial-gradient(125% 95% at 50% 45%,transparent 55%,rgba(0,0,0,.6) 100%)}
+.grain{position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,rgba(255,255,255,.03) 0 1px,transparent 1px 3px);opacity:.65}
+.labels{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.leaders{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.leaders line{stroke:#86EFAC;stroke-width:1.2;stroke-dasharray:3 4;opacity:0}
+.glabel{position:absolute;left:0;top:0;font:600 13px/1 var(--f-display);color:#F1F5F9;text-shadow:0 1px 10px rgba(0,0,0,.9);white-space:nowrap;opacity:0;will-change:transform,opacity}
+.glabel.main{font-size:15px;font-weight:800}
+.tag3d{position:absolute;left:0;top:0;display:grid;gap:3px;background:rgba(8,14,24,.62);border:1px solid rgba(255,255,255,.14);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-radius:12px;padding:8px 12px 9px 27px;color:#F1F5F9;font:700 13.5px/1.2 var(--f-display);white-space:nowrap;opacity:0;will-change:transform,opacity}
+.tag3d::before{content:"";position:absolute;left:11px;top:13px;width:7px;height:7px;border-radius:50%;background:#86EFAC;box-shadow:0 0 10px #86EFAC}
+.tag3d small{font:500 11.5px/1.2 var(--f-body);color:#A3B5C7}
+.dim3d{position:absolute;left:0;top:0;font:600 10.5px/1 var(--f-mono);letter-spacing:.1em;color:#D1FAE5;background:rgba(3,8,15,.75);padding:4px 6px;border-radius:4px;opacity:0}
+.credit{position:absolute;right:14px;bottom:calc(10px + var(--cut));font:500 10.5px/1 var(--f-mono);color:rgba(203,213,225,.5);letter-spacing:.04em}
+.shade{position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity .6s;background:linear-gradient(90deg,rgba(2,5,11,.9) 0%,rgba(2,5,11,.72) 26%,rgba(2,5,11,.22) 44%,rgba(2,5,11,0) 56%)}
+.stage.chapters .shade{opacity:1}
+.intro{position:absolute;left:0;right:0;top:calc(var(--head-h,64px) + clamp(24px,7vh,84px));display:grid;justify-items:center;text-align:center;gap:20px;padding-inline:16px;opacity:0;transform:translateY(14px);transition:opacity .5s ease,transform .5s ease;pointer-events:none}
+.intro.on{opacity:1;transform:none;pointer-events:auto}
+.intro h1{color:#F8FAFC;font-size:clamp(36px,5.2vw,68px);line-height:1.03;font-weight:600;letter-spacing:-.03em;max-width:16ch;text-shadow:0 2px 30px rgba(0,0,0,.35)}
+.intro p{color:#C0CCD8;font-size:clamp(15.5px,1.3vw,18px);max-width:50ch}
+.intro .cta-row{display:flex;flex-wrap:wrap;gap:12px;justify-content:center}
+.news{display:inline-flex;align-items:center;gap:10px;padding:5px 13px 5px 5px;border-radius:999px;border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.05);font:500 13px/1 var(--f-body);color:#D7E1EA;text-decoration:none;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.news b{font:600 11.5px/1 var(--f-body);background:rgba(255,255,255,.13);color:#fff;border-radius:999px;padding:5px 9px}
+.news span{color:#86EFAC}
+.news em{font-style:normal}
+@media (max-width:440px){.news .np{display:none}}
+.btn-mint{background:#86EFAC;color:#052E1C;box-shadow:0 0 0 1px rgba(134,239,172,.4),0 8px 30px rgba(134,239,172,.25)}
+.btn-glass{background:rgba(255,255,255,.04);color:#F1F5F9;border-color:rgba(255,255,255,.26);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.skip-inline{font-size:13px;color:var(--st-muted);text-underline-offset:3px}
+.marquee{position:absolute;left:0;right:0;bottom:calc(24px + var(--cut));display:flex;align-items:center;gap:28px;padding-inline:max(clamp(16px,4vw,40px),calc((100% - 1180px)/2 + 40px));opacity:0;transition:opacity .5s;pointer-events:none}
+.marquee.on{opacity:1}
+.marquee > span{flex:none;font:500 12.5px/1.35 var(--f-body);color:#9FB0C0;max-width:140px}
+.mq{overflow:hidden;flex:1;-webkit-mask-image:linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent);mask-image:linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent)}
+.mq-track{display:flex;gap:44px;width:max-content;animation:mq 42s linear infinite}
+.mq-track span{display:inline-flex;align-items:center;gap:10px;font:600 14px/1 var(--f-display);color:#DCE6EE;white-space:nowrap}
+.mq-track i{width:18px;height:18px;border:1.5px solid rgba(220,230,238,.45);border-radius:5px;display:inline-block;position:relative}
+.mq-track i::after{content:"";position:absolute;inset:4px;border-radius:2px;background:#86EFAC;opacity:.85}
+@keyframes mq{to{transform:translateX(-50%)}}
+.copy{position:absolute;top:0;bottom:var(--cut);left:max(clamp(16px,4vw,40px),calc((100% - 1180px)/2 + 40px));width:min(470px,40%);display:grid;align-items:center;padding-block:96px 56px;pointer-events:none}
+.chap{grid-area:1/1;display:grid;gap:18px;align-content:center;opacity:0;transform:translateY(18px);transition:opacity .5s ease,transform .5s ease;pointer-events:none}
+.chap.on{opacity:1;transform:none;pointer-events:auto}
+.chap h2{color:#F8FAFC;font-size:clamp(30px,3.4vw,48px);line-height:1.04;font-weight:600;letter-spacing:-.025em}
+.chap p{color:var(--st-body);font-size:clamp(16px,1.3vw,18px);max-width:42ch}
+.st-count{justify-self:start;display:inline-flex;align-items:center;gap:8px;font:500 11.5px/1 var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:#A7F3D0;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.05);border-radius:999px;padding:7px 11px}
+.chap .cta-row{display:flex;flex-wrap:wrap;gap:12px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{font:600 13px/1 var(--f-body);color:#F1F5F9;text-decoration:none;border:1px solid rgba(255,255,255,.2);border-radius:999px;padding:8px 12px;background:rgba(255,255,255,.05);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);transition:border-color .2s}
+.chip:hover{border-color:#86EFAC}
+.chip::before{content:"Servicio · ";font-weight:500;color:var(--st-muted)}
+.rail{position:absolute;right:max(16px,calc((100% - 1180px)/2 + 28px));top:50%;transform:translateY(-50%);display:grid;gap:2px;justify-items:end;opacity:0;transition:opacity .5s}
+.stage.chapters .rail{opacity:1}
+.rail button{display:flex;align-items:center;gap:10px;background:none;border:0;color:#6F8395;font:500 12.5px/1 var(--f-body);padding:7px 0;cursor:pointer;transition:color .3s}
+.rail button span{font-family:var(--f-mono);font-size:11px}
+.rail button::after{content:"";width:7px;height:7px;border-radius:50%;border:1.5px solid currentColor;transition:background .3s,border-color .3s,box-shadow .3s}
+.rail button.on{color:#F1F5F9}
+.rail button.on::after{background:#86EFAC;border-color:#86EFAC;box-shadow:0 0 10px #86EFAC}
+.rail .skip{margin-top:12px;font-size:12px;color:var(--st-muted)}
+.cue{position:absolute;left:50%;bottom:calc(92px + var(--cut));transform:translateX(-50%);display:grid;justify-items:center;gap:8px;font:500 10.5px/1 var(--f-mono);letter-spacing:.16em;text-transform:uppercase;color:var(--st-muted);transition:opacity .3s}
+.cue i{width:1.5px;height:26px;background:linear-gradient(#86EFAC,transparent);transform-origin:top;animation:cue 1.8s ease-in-out infinite}
+@keyframes cue{0%{transform:scaleY(.15)}50%{transform:scaleY(1)}100%{transform:scaleY(.15);opacity:.2}}
+.cue.off{opacity:0}
+.prog{position:absolute;left:0;right:0;bottom:var(--cut);height:2px;background:rgba(232,238,242,.06)}
+.prog i{display:block;height:100%;width:0;background:#86EFAC;box-shadow:0 0 12px #86EFAC}
+@media (max-width:980px){.rail{display:none}}
+@media (max-width:760px){
+  .shade{background:linear-gradient(0deg,rgba(2,5,11,.96) 0%,rgba(2,5,11,.88) 36%,rgba(2,5,11,.35) 52%,rgba(2,5,11,0) 62%)}
+  .copy{left:16px;right:16px;width:auto;top:auto;padding-block:0 26px;align-items:end}
+  .chap{align-content:end;gap:12px}
+  .chap h2{font-size:28px}
+  .chap p{font-size:15.5px}
+  .intro{gap:16px}
+  .intro h1{font-size:34px}
+  .intro .btn{padding:11px 15px;font-size:14px}
+  .marquee > span{display:none}
+  .cue{display:none}
+  .credit{display:none}
+}
+.story.static{height:auto;margin-top:0}
+.story.static .stage{position:relative;height:720px}
+
+/* sections */
+section.sec{padding-block:clamp(56px,8vw,100px);border-top:1px solid var(--line)}
+.sec-head{display:grid;gap:14px;max-width:780px;margin-bottom:clamp(28px,4vw,44px)}
+.sec-alt{background:var(--surface-2)}
+
+/* notes */
+.note{display:none;margin-top:28px;border:1.5px dashed var(--note);background:var(--note-soft);border-radius:8px;padding:16px 18px;font-size:14.5px;line-height:1.55;color:var(--ink)}
+.notes-on .note{display:block}
+.note-h{font:600 11.5px/1.2 var(--f-mono);text-transform:uppercase;letter-spacing:.1em;color:var(--note);margin-bottom:10px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.note ul{margin:0;padding-left:18px;display:grid;gap:6px}
+.note p+p,.note p+ul,.note ul+p{margin-top:8px}
+.note a{color:var(--note)}
+.notes-block{padding-block:4px 36px}
+.tag{display:inline-block;font:600 10.5px/1 var(--f-mono);padding:4px 6px;border-radius:3px;letter-spacing:.05em;text-transform:uppercase;white-space:nowrap;vertical-align:1px}
+.tag-obs{background:var(--ok-soft);color:var(--ok)}
+.tag-inf{background:var(--sea-soft);color:var(--sea)}
+.tag-val{background:var(--warn-soft);color:var(--warn)}
+.bench-wrap{overflow-x:auto;margin-top:12px;border:1px solid var(--line);border-radius:6px;background:var(--surface)}
+.bench{border-collapse:collapse;width:100%;min-width:860px;font-size:13.5px}
+.bench th,.bench td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+.bench th{font:600 11px/1.2 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);background:var(--surface-2)}
+.bench tr:last-child td{border-bottom:0}
+.bench td:first-child{font-weight:600;white-space:nowrap}
+.slots{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:12px}
+.slot{border:1.5px dashed var(--note);border-radius:6px;padding:16px 12px;text-align:center;font:500 12px/1.3 var(--f-mono);color:var(--note);background:var(--surface)}
+@media (max-width:640px){.slots{grid-template-columns:1fr 1fr}}
+
+/* servicios */
+.svc{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.4fr);gap:clamp(20px,3vw,36px);align-items:start}
+.svc-list{display:grid;border-top:1px solid var(--line-2)}
+.svc-list button{display:grid;grid-template-columns:1fr auto;gap:4px 12px;text-align:left;background:none;border:0;border-bottom:1px solid var(--line);padding:15px 8px 15px 14px;cursor:pointer;color:var(--ink-2);font:680 18px/1.2 var(--f-display);font-stretch:106%;transition:box-shadow .2s,color .2s}
+.svc-list button small{grid-column:1;font:400 13.5px/1.4 var(--f-body);color:var(--ink-3)}
+.svc-list button::after{content:"→";grid-row:1/3;grid-column:2;align-self:center;color:var(--ink-3);font-family:var(--f-body);transition:transform .2s,color .2s}
+.svc-list button[aria-selected="true"]{color:var(--ink);box-shadow:inset 3px 0 0 var(--accent)}
+.svc-list button[aria-selected="true"]::after{color:var(--accent-ink);transform:translateX(4px)}
+.svc-panels{display:grid;gap:16px}
+.svc-panel{display:none;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:clamp(20px,3vw,32px);gap:20px;align-content:start}
+.svc-panel.on{display:grid}
+.svc-panel h3{font-size:clamp(24px,2.4vw,31px);line-height:1.1}
+.svc-panel .lead{font-size:17px;color:var(--ink-2);max-width:56ch}
+.svc-cols{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+.svc-cols ul{margin:0;padding:0;list-style:none;display:grid;gap:8px;font-size:15px;color:var(--ink-2)}
+.svc-cols li{padding-left:16px;position:relative}
+.svc-cols li::before{content:"";position:absolute;left:0;top:.65em;width:7px;height:2px;background:var(--accent)}
+.svc-cols p{font-size:15px;color:var(--ink-2)}
+.svc-ai{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:start;padding:14px 16px;background:#0B1422;color:#E6EDF3;border-radius:10px;font-size:14.5px;line-height:1.5}
+.svc-ai b{font:600 11px/1.6 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:#86EFAC;white-space:nowrap}
+.svc-foot{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+@media (max-width:860px){.svc{grid-template-columns:1fr}.svc-list{display:none}.svc-panel{display:grid}.svc-cols{grid-template-columns:1fr}}
+
+/* clientes */
+.aud{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:2px solid var(--ink)}
+.aud > div{padding:20px 20px 8px 0;display:grid;gap:10px;align-content:start}
+.aud > div + div{padding-left:20px;border-left:1px solid var(--line)}
+.aud p{font-size:15px;color:var(--ink-2)}
+.aud a{font-weight:600;font-size:14.5px;color:var(--accent-ink);text-underline-offset:3px}
+@media (max-width:900px){.aud{grid-template-columns:1fr 1fr}.aud > div:nth-child(3){padding-left:0;border-left:0}.aud > div:nth-child(n+3){border-top:1px solid var(--line)}}
+@media (max-width:540px){.aud{grid-template-columns:1fr}.aud > div + div{padding-left:0;border-left:0;border-top:1px solid var(--line)}}
+
+/* mercado */
+.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:2px solid var(--ink)}
+.stat{padding:22px 22px 4px 0;display:grid;gap:8px;align-content:start}
+.stat+.stat{padding-left:22px;border-left:1px solid var(--line)}
+.stat b{font-family:var(--f-display);font-weight:780;font-stretch:118%;font-size:clamp(34px,4vw,48px);line-height:1;font-variant-numeric:tabular-nums}
+.stat p{color:var(--ink-2);font-size:15px}
+.src{font-size:12.5px;color:var(--ink-3)}
+.src a{color:var(--ink-3)}
+.mkt-text{margin-top:28px;max-width:70ch;color:var(--ink-2)}
+@media (max-width:760px){.stats{grid-template-columns:1fr}.stat+.stat{padding-left:0;border-left:0;border-top:1px solid var(--line)}}
+
+/* datos */
+.radar{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(24px,4vw,48px);align-items:start}
+.figs{display:grid;grid-template-columns:1fr 1fr;border-top:2px solid var(--ink)}
+.fig{padding:18px 16px 18px 0;border-bottom:1px solid var(--line);display:grid;gap:6px}
+.fig:nth-child(even){padding-left:16px;border-left:1px solid var(--line)}
+.fig b{font-family:var(--f-display);font-weight:760;font-stretch:118%;font-size:30px;line-height:1;font-variant-numeric:tabular-nums}
+.fig span{font-size:14px;color:var(--ink-2)}
+.pipe{list-style:none;margin:0;padding:0;display:grid;border-top:1px solid var(--line-2)}
+.pipe li{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;padding:12px 0;border-bottom:1px solid var(--line);font-size:15px}
+.pipe small{display:block;color:var(--ink-3);font-size:13px}
+.st{font:600 11px/1 var(--f-mono);letter-spacing:.06em;text-transform:uppercase;padding:5px 8px;border-radius:4px;white-space:nowrap}
+.st-ok{background:var(--ok-soft);color:var(--ok)}
+.st-run{background:var(--accent-soft);color:var(--accent-ink)}
+.st-next{background:var(--surface-2);color:var(--ink-2);border:1px solid var(--line)}
+.st-wait{background:var(--warn-soft);color:var(--warn)}
+.sub-head{display:grid;gap:10px;margin:clamp(40px,6vw,64px) 0 24px;max-width:760px}
+.sub-head h3{font-size:clamp(22px,2.2vw,28px)}
+@media (max-width:960px){.radar{grid-template-columns:1fr}}
+@media (max-width:560px){.figs{grid-template-columns:1fr}.fig:nth-child(even){padding-left:0;border-left:0}}
+
+/* simulador */
+.sim{display:grid;grid-template-columns:minmax(0,.95fr) minmax(0,1.05fr);gap:20px;align-items:start}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:22px;display:grid;gap:20px}
+.seg{display:inline-flex;flex-wrap:wrap;gap:4px;border:1px solid var(--line-2);border-radius:8px;padding:4px;background:var(--surface-2);justify-self:start}
+.seg button{font:600 14px/1 var(--f-body);color:var(--ink-2);background:transparent;border:0;border-radius:5px;padding:9px 12px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+.ex-list{display:grid;gap:8px}
+.ex{display:flex;justify-content:space-between;align-items:center;gap:12px;text-align:left;font:500 14px/1.3 var(--f-body);color:var(--ink);background:var(--surface-2);border:1px solid var(--line);border-radius:6px;padding:10px 12px;cursor:pointer}
+.ex[aria-pressed="true"]{border-color:var(--ink);background:var(--surface)}
+.ex .mono{font-size:11.5px;color:var(--ink-3);white-space:nowrap}
+.ctrl-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px 20px}
+.ctrl{display:grid;gap:6px}
+.ctrl label,.fld label,.lab{font-weight:600;font-size:14px;display:flex;justify-content:space-between;gap:8px}
+.ctrl output{font-family:var(--f-mono);font-weight:500;font-size:13px;color:var(--ink-2)}
+input[type=range]{width:100%;accent-color:var(--accent)}
+.checks{display:grid;gap:10px;grid-column:1/-1}
+.chk{display:flex;gap:10px;align-items:flex-start;font-size:14.5px;cursor:pointer}
+.chk input{width:18px;height:18px;margin:2px 0 0;accent-color:var(--accent);flex:none}
+.sim-note{font-size:13px;color:var(--ink-3)}
+.res-head{display:flex;gap:18px;align-items:center;flex-wrap:wrap}
+.res-score{font-family:var(--f-display);font-stretch:118%;display:flex;align-items:baseline;gap:4px}
+.res-score b{font-size:72px;line-height:.85;font-weight:790;font-variant-numeric:tabular-nums}
+.res-score span{font-size:18px;color:var(--ink-3)}
+.res-score.dim b{color:var(--ink-3)}
+.res-side{display:grid;gap:8px}
+.pill{display:inline-flex;align-items:center;gap:6px;font:600 13px/1 var(--f-body);padding:7px 11px;border-radius:999px;justify-self:start;white-space:nowrap}
+.pill.ok{background:var(--ok-soft);color:var(--ok)}
+.pill.warn{background:var(--warn-soft);color:var(--warn)}
+.pill.bad{background:var(--bad-soft);color:var(--bad)}
+.pill.neutral{background:var(--surface-2);color:var(--ink-2);border:1px solid var(--line)}
+.filters{list-style:none;margin:0;padding:0;display:grid;gap:7px;font-size:14.5px}
+.filters li{display:grid;grid-template-columns:20px 1fr auto;gap:8px;align-items:center}
+.filters .ic{width:18px;height:18px;border-radius:50%;display:grid;place-items:center;font:700 11px/1 var(--f-body)}
+.filters .ic.y{background:var(--ok-soft);color:var(--ok)}
+.filters .ic.n{background:var(--bad-soft);color:var(--bad)}
+.filters .d{font-family:var(--f-mono);font-size:12.5px;color:var(--ink-3)}
+.sr{position:absolute;left:-9999px}
+.bars{display:grid;gap:12px}
+.bar-row{display:grid;gap:5px}
+.bar-lab{display:flex;justify-content:space-between;gap:10px;font-size:14px}
+.bar-lab .mono{font-size:12.5px;color:var(--ink-3)}
+.bar-line{display:grid;grid-template-columns:1fr 70px;gap:10px;align-items:center}
+.bar-track{height:12px;background:var(--surface-2);border:1px solid var(--line);border-radius:3px;overflow:hidden}
+.bar-fill{height:100%;background:var(--accent);transition:width .25s ease}
+.bar-fill.neg{background:var(--bad)}
+.bar-pts{font-family:var(--f-mono);font-size:12.5px;text-align:right;color:var(--ink-2);font-variant-numeric:tabular-nums}
+.scale-note{font-size:12px;color:var(--ink-3)}
+.others{display:flex;flex-wrap:wrap;gap:8px}
+.other{font:500 13.5px/1.2 var(--f-body);display:inline-flex;gap:8px;align-items:center;padding:8px 11px;border-radius:6px;border:1px solid var(--line-2);background:var(--surface-2);color:var(--ink);cursor:pointer}
+.other b{font-family:var(--f-mono);font-weight:600}
+.other.fail b{color:var(--bad)}
+@media (max-width:900px){.sim{grid-template-columns:1fr}}
+@media (max-width:520px){.ctrl-grid{grid-template-columns:1fr}}
+
+/* IA */
+.ia{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.ia-col{border-radius:10px;padding:24px;display:grid;gap:14px;align-content:start}
+.ia-col.ai{background:#0B1422;color:#E6EDF3}
+.ia-col.ai h3{color:#F1F5F9}
+.ia-col.hu{background:var(--surface);border:1px solid var(--line)}
+.ia-col ul{margin:0;padding:0;list-style:none;display:grid;gap:12px}
+.ia-col li{display:grid;gap:2px;padding-bottom:12px;border-bottom:1px solid color-mix(in srgb,currentColor 18%,transparent)}
+.ia-col li:last-child{border-bottom:0;padding-bottom:0}
+.ia-col li b{font-weight:600}
+.ia-col li span{font-size:14.5px;opacity:.82}
+.ia-foot{margin-top:18px;font-size:14px;color:var(--ink-3)}
+@media (max-width:820px){.ia{grid-template-columns:1fr}}
+
+/* contacto */
+.tabs{display:flex;flex-wrap:wrap;gap:4px 18px;border-bottom:1px solid var(--line-2);margin-bottom:22px}
+.tabs button{font:600 15px/1 var(--f-body);color:var(--ink-2);background:transparent;border:0;border-bottom:3px solid transparent;padding:12px 2px 13px;cursor:pointer}
+.tabs button[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--accent)}
+.intake{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:20px;align-items:start}
+.fgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px 16px}
+.fld{display:grid;gap:6px;min-width:0}
+.fld.full{grid-column:1/-1}
+.fld small{color:var(--ink-3);font-size:12.5px;font-weight:400}
+input[type=text],input[type=number],input[type=tel],input[type=email],select,textarea{width:100%;font:inherit;font-size:15px;padding:10px 12px;border:1px solid var(--line-2);border-radius:6px;background:var(--surface);color:var(--ink);min-width:0}
+textarea{resize:vertical;min-height:110px;line-height:1.5}
+input::placeholder,textarea::placeholder{color:var(--ink-3)}
+.consent{grid-column:1/-1;font-size:13.5px;color:var(--ink-2)}
+.form-actions{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.form-msg{font-size:14px}
+.form-msg.err{color:var(--bad)}
+.form-msg.okm{color:var(--ok)}
+.paste{display:grid;gap:10px;padding:16px;border:1px dashed var(--line-2);border-radius:8px;background:var(--surface-2)}
+.paste-top{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.badge{font:600 10.5px/1 var(--f-mono);letter-spacing:.06em;text-transform:uppercase;padding:4px 7px;border-radius:3px;background:var(--accent-soft);color:var(--accent-ink)}
+.parse-msg{font-size:13.5px;color:var(--ink-2)}
+.side{display:grid;gap:16px;position:sticky;top:84px}
+.evals{display:grid;gap:8px}
+.ev{display:grid;grid-template-columns:auto 1fr;gap:4px 10px;align-items:center;padding:10px 12px;border:1px solid var(--line);border-radius:6px;background:var(--surface)}
+.ev .why{grid-column:2;font-size:13px;color:var(--ink-3)}
+.ev .nm{font-weight:600;font-size:14.5px}
+.wa{background:var(--surface);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.wa-top{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:9px 12px;background:var(--surface-2);border-bottom:1px solid var(--line);font:500 11.5px/1.2 var(--f-mono);color:var(--ink-3);letter-spacing:.05em;text-transform:uppercase}
+.wa pre{margin:12px;padding:12px 14px;background:var(--ok-soft);color:var(--ink);border-radius:8px 8px 8px 2px;font:13.5px/1.55 var(--f-body);white-space:pre-wrap;word-break:break-word}
+.wa-act{display:flex;gap:8px;flex-wrap:wrap;padding:0 12px 12px}
+.yaml{margin:0;background:#0B1422;color:#D1FAE5;border-radius:8px;padding:14px 16px;font:12.5px/1.6 var(--f-mono);overflow-x:auto;white-space:pre}
+.ai-box{display:grid;gap:10px;padding:14px;border:1px solid var(--line);border-radius:8px;background:var(--surface)}
+.ai-out{white-space:pre-wrap;font-size:14px;line-height:1.55;color:var(--ink)}
+.ai-only{display:none!important}
+.has-ai .ai-only{display:grid!important}
+@media (max-width:960px){.intake{grid-template-columns:1fr}.side{position:static}}
+@media (max-width:560px){.fgrid{grid-template-columns:1fr}}
+
+/* footer */
+.foot{padding-block:40px 56px;border-top:1px solid var(--line);display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:24px;font-size:14px;color:var(--ink-2)}
+.foot h4{margin-bottom:10px}
+.foot ul{margin:0;padding:0;list-style:none;display:grid;gap:6px}
+.foot a{color:var(--ink-2)}
+@media (max-width:760px){.foot{grid-template-columns:1fr}}
+</style>
+
+<div class="proto" role="region" aria-label="Aviso de prototipo">
+  <div class="wrap proto-in">
+    <span><b>Prototipo de propuesta</b> para Infracomex · no es el sitio oficial<span class="proto-long"> · versión del 24 de septiembre de 2026</span></span>
+    <button id="notesToggle" class="notes-btn" type="button" aria-pressed="false"><span class="dot" aria-hidden="true"></span><span id="notesLabel">Ver notas de la propuesta</span></button>
+  </div>
+</div>
+
+<header class="site-head over" id="siteHead">
+  <div class="wrap head-in">
+    <a class="brand" href="#inicio" aria-label="Infracomex, inicio">
+      <svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true">
+        <rect x="1.5" y="1.5" width="27" height="27" rx="2" fill="none" stroke="currentColor" stroke-width="2"/>
+        <path d="M1.5 15H28.5M10 1.5V15M17 1.5V15M8 15V28.5M20 15V28.5" stroke="currentColor" stroke-width="1.3"/>
+        <rect x="20" y="15" width="8.5" height="13.5" fill="#34D399"/>
+      </svg>
+      <span class="brand-txt"><span class="brand-name">INFRACOMEX</span><span class="brand-sub">Infraestructura Comercial y Expansión</span></span>
+    </a>
+    <nav class="nav" aria-label="Secciones">
+      <a href="#servicios">Servicios</a>
+      <a href="#clientes">Clientes</a>
+      <a href="#datos">Datos</a>
+      <a href="#ia">IA</a>
+    </nav>
+    <a class="btn btn-ink btn-sm" href="#contacto" data-tab="asesoria">Contacto</a>
+  </div>
+</header>
+
+<main>
+<section id="inicio" class="story" aria-label="Cómo se expande una marca, en seis pasos">
+  <div class="stage" id="stage">
+    <canvas id="gl" aria-hidden="true"></canvas>
+    <div class="aurora" aria-hidden="true"></div>
+    <div class="vign" aria-hidden="true"></div>
+    <div class="cloudfx" aria-hidden="true"></div>
+    <div class="grain" aria-hidden="true"></div>
+    <svg class="leaders" id="leaders" aria-hidden="true"><line></line><line></line><line></line><line></line></svg>
+    <div class="labels" id="labels" aria-hidden="true"></div>
+    <div class="shade" aria-hidden="true"></div>
+
+    <div class="intro on" data-a="0" data-b="0.1">
+      <a class="news" href="#datos"><b>Nuevo</b>Radar Cartagena<em class="np"> · 153.672 predios</em> <span>Explorar ›</span></a>
+      <h1>Lo encontramos, lo estructuramos y lo hacemos realidad.</h1>
+      <p>Expansión comercial e infraestructura en el Caribe colombiano: estrategia, ubicación, negocio, contrato y obra, con un solo equipo.</p>
+      <div class="cta-row">
+        <a class="btn btn-mint" href="#contacto" data-tab="asesoria">Hablemos de su proyecto</a>
+        <a class="btn btn-glass" href="#servicios">Ver servicios</a>
+      </div>
+      <a class="skip-inline" href="#servicios">Saltar la animación</a>
+    </div>
+    <div class="marquee on" data-a="0" data-b="0.1" aria-hidden="true">
+      <span>Un solo equipo para cada etapa</span>
+      <div class="mq"><div class="mq-track"><span><i></i>Asesoría empresarial</span><span><i></i>Planes de expansión</span><span><i></i>Búsqueda de ubicaciones</span><span><i></i>Intermediación comercial</span><span><i></i>Estructuración e inversión</span><span><i></i>Respaldo legal y diseño funcional</span><span><i></i>Asesoría empresarial</span><span><i></i>Planes de expansión</span><span><i></i>Búsqueda de ubicaciones</span><span><i></i>Intermediación comercial</span><span><i></i>Estructuración e inversión</span><span><i></i>Respaldo legal y diseño funcional</span></div></div>
+    </div>
+
+    <div class="copy">
+      <article class="chap" data-a="0.1" data-b="0.22">
+        <p class="st-count">01 / 06 · Estrategia</p>
+        <h2>Una marca quiere crecer</h2>
+        <p>Todo empieza con una pregunta: dónde, cuándo y con qué formato abrir el siguiente punto. Antes de buscar un local, asesoramos a la empresa en su plan.</p>
+        <div class="chips"><a class="chip" href="#svc-s1" data-svc="s1">Asesoría empresarial</a><a class="chip" href="#svc-s2" data-svc="s2">Planes de expansión</a></div>
+      </article>
+      <article class="chap" data-a="0.22" data-b="0.38">
+        <p class="st-count">02 / 06 · Territorio</p>
+        <h2>Leemos el territorio</h2>
+        <p>Población, competencia, vías y uso del suelo, manzana por manzana. La demanda se ve en los datos antes de salir a la calle.</p>
+        <div class="chips"><a class="chip" href="#svc-s2" data-svc="s2">Planes de expansión</a><a class="chip" href="#datos">Inteligencia territorial</a></div>
+      </article>
+      <article class="chap" data-a="0.38" data-b="0.54">
+        <p class="st-count">03 / 06 · Ubicación</p>
+        <h2>Encontramos el lugar</h2>
+        <p>Evaluamos cada predio contra lo que la marca necesita. Descartamos rápido lo que no sirve y visitamos en persona lo que queda.</p>
+        <div class="chips"><a class="chip" href="#svc-s3" data-svc="s3">Búsqueda de ubicaciones</a><a class="chip" href="#svc-s4" data-svc="s4">Intermediación comercial</a></div>
+      </article>
+      <article class="chap" data-a="0.54" data-b="0.7">
+        <p class="st-count">04 / 06 · Estructura</p>
+        <h2>Lo estructuramos</h2>
+        <p>Viabilidad, inversión, contrato de largo plazo y diseño del local. Equilibramos los intereses del propietario, el inversionista y la marca.</p>
+        <div class="chips"><a class="chip" href="#svc-s5" data-svc="s5">Estructuración e inversión</a><a class="chip" href="#svc-s6" data-svc="s6">Respaldo legal</a></div>
+      </article>
+      <article class="chap" data-a="0.7" data-b="0.84">
+        <p class="st-count">05 / 06 · Apertura</p>
+        <h2>Lo hacemos realidad</h2>
+        <p>Permisos, obra y adecuación al manual de la marca, con acompañamiento hasta el día en que el punto abre sus puertas.</p>
+        <div class="chips"><a class="chip" href="#svc-s6" data-svc="s6">Diseño funcional y obra</a></div>
+      </article>
+      <article class="chap" data-a="0.84" data-b="1.01">
+        <p class="st-count">06 / 06 · Red</p>
+        <h2>Y la red crece</h2>
+        <p>Una ubicación bien elegida es el comienzo de una red. Lo que funciona en Cartagena se replica en el resto del Caribe.</p>
+        <div class="cta-row"><a class="btn btn-mint" href="#contacto" data-tab="asesoria">Hablemos de su proyecto</a><a class="btn btn-glass" href="#servicios">Ver servicios</a></div>
+      </article>
+    </div>
+    <nav class="rail" aria-label="Pasos">
+      <button type="button" data-go="0.16"><span>01</span>Estrategia</button>
+      <button type="button" data-go="0.31"><span>02</span>Territorio</button>
+      <button type="button" data-go="0.47"><span>03</span>Ubicación</button>
+      <button type="button" data-go="0.665"><span>04</span>Estructura</button>
+      <button type="button" data-go="0.815"><span>05</span>Apertura</button>
+      <button type="button" data-go="0.99"><span>06</span>Red</button>
+      <a class="skip" href="#servicios">Saltar animación</a>
+    </nav>
+    <div class="cue" id="cue" aria-hidden="true"><span>Desplácese</span><i></i></div>
+    <div class="credit" id="credit" aria-hidden="true">Tierra: NASA Blue Marble y Black Marble</div>
+    <div class="prog" aria-hidden="true"><i id="progFill"></i></div>
+  </div>
+</section>
+
+<div class="wrap notes-block">
+  <aside class="note" aria-label="Nota de la propuesta">
+    <div class="note-h">Nota para Carlos · la portada animada <span class="tag tag-inf">Inferido</span></div>
+    <p>La frase de la portada es de Carlos: está en su sitio actual («Nosotros lo encontramos, lo estructuramos y lo hacemos realidad»). La animación la convierte en un recorrido de seis pasos, del planeta al predio y de vuelta a la región, y cada paso enlaza con la línea de servicio que le corresponde.</p>
+    <ul>
+      <li>La Tierra usa imágenes de la NASA (Blue Marble y Black Marble, de dominio público). La ciudad es una recreación ilustrativa: las manzanas, los predios, la competencia y la demanda son de ejemplo. El mapa final sí ubica las capitales del Caribe en su posición real.</li>
+      <li>Está hecha en 3D en el navegador (WebGL), sin video. En equipos lentos baja la resolución, y si el navegador no tiene WebGL se ve un fondo fijo y el texto sigue funcionando. Hay un enlace para saltarla.</li>
+      <li>La versión de infracomex.co que tienen los buscadores todavía mostraba texto de relleno de la plantilla («Pacific hake false trevally…»). <span class="tag tag-obs">Observado</span> <span class="muted">Índice de búsqueda, dic. 2025; dominio y hosting por renovar.</span></li>
+      <li><b>Falta de Carlos:</b> logo oficial (este es provisional) y fotos de proyectos.</li>
+    </ul>
+  </aside>
+  <aside class="note" aria-label="Benchmark">
+    <div class="note-h">Benchmark · qué hacen las webs del sector que usan IA</div>
+    <p>Revisé firmas y plataformas de EE. UU., México, China y Colombia. Esto es lo que muestran en su web y lo que esta propuesta toma de cada una.</p>
+    <div class="bench-wrap">
+      <table class="bench">
+        <thead><tr><th>Referente</th><th>Qué hace en su web</th><th>Evidencia</th><th>Lo que tomamos</th></tr></thead>
+        <tbody>
+          <tr><td><a href="https://www.placer.ai/anchor/articles/placer-ai-and-the-retail-strategy-partner-to-bridge-the-gap-between-location-analytics-and-deal-execution" target="_blank" rel="noopener">The Retail Strategy + Placer.ai</a> · EE. UU.</td><td>Se presenta como el «departamento de bienes raíces tercerizado» de la marca: estrategia de mercado, ubicación, negociación y apertura, con datos de tráfico (alianza de feb. 2026).</td><td><span class="tag tag-obs">Observado</span></td><td>Presentar el ciclo completo, de la estrategia a la apertura, y no un solo servicio.</td></tr>
+          <tr><td><a href="https://commercialobserver.com/2026/09/retail-location-intelligence-ai-technology/" target="_blank" rel="noopener">CBRE y Ripco</a> · EE. UU.</td><td>Commercial Observer, 1 sep. 2026: «el corretaje se volvió consultoría»; los datos sirven para chequear, pero nunca van solos; el turismo es el mayor vacío de los datos.</td><td><span class="tag tag-obs">Observado</span></td><td>La asesoría empresarial como línea propia y la visita de campo como paso obligatorio.</td></tr>
+          <tr><td><a href="https://www.growthfactor.ai/resources/blog/retail-site-selection-software" target="_blank" rel="noopener">GrowthFactor</a> · EE. UU.</td><td>Puntaje de sitios «caja de cristal» que muestra qué variable movió el número; casos con cifras (Cavender's pasó de 9 a 27 aperturas en un año).</td><td><span class="tag tag-val">Por validar</span> cifras del proveedor</td><td>El simulador de puntaje con el aporte de cada variable.</td></tr>
+          <tr><td><a href="https://www.datlas.mx/reportes_LAUR.AI/" target="_blank" rel="noopener">Datlas · LAUR.AI</a> · México</td><td>Con un par de coordenadas entrega un reporte de más de 50 variables del entorno a 1, 3 y 5 km.</td><td><span class="tag tag-obs">Observado</span> oferta publicada</td><td>El Radar Cartagena y los informes de mercado de la asesoría.</td></tr>
+          <tr><td><a href="https://edge-re.com/services/tenant-representation/" target="_blank" rel="noopener">Edge Realty Partners</a> · EE. UU.</td><td>Publica su kit de datos (Placer.ai, CoStar y otros) y un testimonio con cifra: 70 parques abiertos en 24 meses.</td><td><span class="tag tag-obs">Observado</span></td><td>Casos con números cuando Carlos autorice publicarlos.</td></tr>
+          <tr><td><a href="https://spot2.mx/landings/locales-comerciales" target="_blank" rel="noopener">Spot2</a> · México</td><td>Marketplace de inmuebles comerciales con fichas verificadas. Publica la comisión que promueve para el asesor (5 % del contrato o un mes de renta) y dice usar IA para estimar valores y acortar cierres.</td><td><span class="tag tag-obs">Observado</span> modelo · <span class="tag tag-val">Por validar</span> impacto de la IA</td><td>La ficha estándar de predio en la intermediación.</td></tr>
+          <tr><td><a href="https://www.prnewswire.com/news-releases/amap-launches-spatial-intelligence-open-platform-for-no-code-ai-agents-in-location-services-302888910.html" target="_blank" rel="noopener">Amap · Qianyu</a> · China</td><td>Lanzado el 24 sep. 2026: un agente al que se le pregunta en lenguaje natural dónde abrir y devuelve recomendaciones trazables.</td><td><span class="tag tag-obs">Observado</span> lanzamiento</td><td>Hacia dónde va esto: consultar el Radar escribiendo.</td></tr>
+          <tr><td><a href="https://betoenelretail.com/" target="_blank" rel="noopener">Beto en el Retail</a> · Colombia</td><td>Expansionista independiente: cobra por hitos (firma de contrato) y dice tener 90+ aperturas y 500 locaciones evaluadas. Hoy su web está en mantenimiento.</td><td><span class="tag tag-obs">Observado</span> texto indexado, feb. 2024</td><td>El hueco: en Colombia no encontré un expansionista independiente con datos o IA en su web.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </aside>
+</div>
+
+<section id="servicios" class="sec">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Servicios</p>
+      <h2>Un solo equipo para todas las etapas de su proyecto</h2>
+      <p class="lede">Puede contratarnos para una etapa o para el ciclo completo. En cada servicio le decimos qué hace la inteligencia artificial y qué hace nuestro equipo.</p>
+    </div>
+    <div class="svc">
+      <div class="svc-list" role="tablist" aria-label="Servicios" id="svcList">
+        <button type="button" role="tab" id="svt-s1" aria-controls="svc-s1" aria-selected="true">Asesoría empresarial<small>Decisiones de infraestructura comercial</small></button>
+        <button type="button" role="tab" id="svt-s2" aria-controls="svc-s2" aria-selected="false">Planes de expansión<small>Dónde, cuándo y con qué formato crecer</small></button>
+        <button type="button" role="tab" id="svt-s3" aria-controls="svc-s3" aria-selected="false">Búsqueda de ubicaciones<small>Predios evaluados para cadenas y marcas</small></button>
+        <button type="button" role="tab" id="svt-s4" aria-controls="svc-s4" aria-selected="false">Intermediación comercial<small>Propietarios y marcas, en arriendo o venta</small></button>
+        <button type="button" role="tab" id="svt-s5" aria-controls="svc-s5" aria-selected="false">Estructuración e inversión<small>Del lote al activo con arrendatario</small></button>
+        <button type="button" role="tab" id="svt-s6" aria-controls="svc-s6" aria-selected="false">Respaldo legal y diseño funcional<small>Contratos, permisos, adecuación y obra</small></button>
+      </div>
+      <div class="svc-panels">
+        <article class="svc-panel on" id="svc-s1" role="tabpanel" aria-labelledby="svt-s1">
+          <p class="eyebrow">Para la gerencia</p>
+          <h3>Asesoría empresarial</h3>
+          <p class="lead">Acompañamos a la gerencia en las decisiones de infraestructura comercial: dónde operar, cuándo crecer, qué comprar o arrendar y cómo negociarlo.</p>
+          <div class="svc-cols">
+            <div style="display:grid;gap:10px"><h4>Qué hacemos</h4><ul><li>Diagnóstico de la red de puntos actual</li><li>Evaluación de proyectos e inmuebles antes de comprometer capital</li><li>Estrategia de negociación con propietarios y desarrolladores</li><li>Reubicación o cierre de puntos que no rinden</li></ul></div>
+            <div style="display:grid;gap:10px"><h4>Para quién</h4><p>Empresas y marcas que están creciendo, reorganizando su red o entrando a una ciudad nueva.</p><h4 style="margin-top:6px">Qué recibe</h4><p>Informe con recomendaciones y supuestos a la vista, y acompañamiento en reuniones y comités.</p></div>
+          </div>
+          <div class="svc-ai"><b>Con IA</b><span>Informes de mercado armados con fuentes públicas y actualizados cada mes. Las notas de cada reunión quedan resumidas y con tareas asignadas.</span></div>
+          <div class="svc-foot"><a class="btn btn-ink btn-sm" href="#contacto" data-tab="asesoria">Solicitar asesoría</a></div>
+        </article>
+        <article class="svc-panel" id="svc-s2" role="tabpanel" aria-labelledby="svt-s2">
+          <p class="eyebrow">Para cadenas y franquicias</p>
+          <h3>Planes de expansión</h3>
+          <p class="lead">Definimos en qué ciudades y zonas crecer, con qué formato y a qué ritmo, antes de buscar el primer local.</p>
+          <div class="svc-cols">
+            <div style="display:grid;gap:10px"><h4>Qué hacemos</h4><ul><li>Priorización de ciudades y zonas por demanda y competencia</li><li>Criterios de ubicación por formato: el brief de expansión</li><li>Ritmo de aperturas y presupuesto</li><li>Riesgo de que un punto nuevo le quite ventas a los propios</li></ul></div>
+            <div style="display:grid;gap:10px"><h4>Para quién</h4><p>Cadenas y franquicias con una meta de aperturas en el Caribe.</p><h4 style="margin-top:6px">Qué recibe</h4><p>Plan de expansión con zonas priorizadas y un brief por formato, listo para salir a buscar.</p></div>
+          </div>
+          <div class="svc-ai"><b>Con IA</b><span>Modelos de demanda por manzana con datos del censo, el catastro y mapas abiertos, y escenarios de apertura comparables.</span></div>
+          <div class="svc-foot"><a class="btn btn-ink btn-sm" href="#contacto" data-tab="cadena">Enviar brief</a></div>
+        </article>
+        <article class="svc-panel" id="svc-s3" role="tabpanel" aria-labelledby="svt-s3">
+          <p class="eyebrow">Para gerentes de expansión</p>
+          <h3>Búsqueda y evaluación de ubicaciones</h3>
+          <p class="lead">Encontramos y evaluamos predios para cadenas, con datos y visita de campo, y presentamos solo los que cumplen el brief.</p>
+          <div class="svc-cols">
+            <div style="display:grid;gap:10px"><h4>Qué hacemos</h4><ul><li>Barrido de la ciudad contra el brief de la marca</li><li>Puntaje de cada predio con el aporte de cada variable</li><li>Visita y validación en campo</li><li>Carpeta de sitio lista para el comité</li></ul></div>
+            <div style="display:grid;gap:10px"><h4>Para quién</h4><p>Cadenas de retail, farmacia, conveniencia y servicios.</p><h4 style="margin-top:6px">Qué recibe</h4><p>Carpetas de sitio comparables y seguimiento hasta la firma del contrato.</p></div>
+          </div>
+          <div class="svc-ai"><b>Con IA</b><span>Cada predio recibe un puntaje de 0 a 100 que muestra qué variable lo subió y cuál lo bajó. <a href="#simulador" style="color:inherit">Pruebe el simulador</a>.</span></div>
+          <div class="svc-foot"><a class="btn btn-ink btn-sm" href="#contacto" data-tab="cadena">Enviar brief</a></div>
+        </article>
+        <article class="svc-panel" id="svc-s4" role="tabpanel" aria-labelledby="svt-s4">
+          <p class="eyebrow">Para propietarios y marcas</p>
+          <h3>Intermediación comercial</h3>
+          <p class="lead">Conectamos propietarios de locales y lotes con las marcas que los pueden usar, en arriendo o venta.</p>
+          <div class="svc-cols">
+            <div style="display:grid;gap:10px"><h4>Qué hacemos</h4><ul><li>Recepción y pre-evaluación de cada predio ofrecido</li><li>Emparejamiento con los briefs de las marcas</li><li>Negociación de condiciones</li><li>Acompañamiento hasta la entrega</li></ul></div>
+            <div style="display:grid;gap:10px"><h4>Para quién</h4><p>Propietarios, desarrolladores y marcas que buscan local.</p><h4 style="margin-top:6px">Qué recibe</h4><p>Una respuesta clara: si el predio sirve, para qué tipo de marca y qué le falta.</p></div>
+          </div>
+          <div class="svc-ai"><b>Con IA</b><span>Un asistente ordena el mensaje del propietario en una ficha y le responde el mismo día. <a href="#contacto" data-tab="predio" style="color:inherit">Pruébelo con su predio</a>.</span></div>
+          <div class="svc-foot"><a class="btn btn-ink btn-sm" href="#contacto" data-tab="predio">Postular un predio</a></div>
+        </article>
+        <article class="svc-panel" id="svc-s5" role="tabpanel" aria-labelledby="svt-s5">
+          <p class="eyebrow">Para inversionistas</p>
+          <h3>Estructuración de proyectos e inversión</h3>
+          <p class="lead">Convertimos un lote en un activo con arrendatario: compra, obra y contrato, con los números a la vista.</p>
+          <div class="svc-cols">
+            <div style="display:grid;gap:10px"><h4>Qué hacemos</h4><ul><li>Construcción a la medida para una marca ancla</li><li>Locales y galerías de barrio con mezcla de arrendatarios</li><li>Estudio de viabilidad y modelo financiero</li><li>Estructura de aportes entre socios</li></ul></div>
+            <div style="display:grid;gap:10px"><h4>Para quién</h4><p>Inversionistas nacionales y extranjeros, y propietarios de lotes.</p><h4 style="margin-top:6px">Qué recibe</h4><p>Memorando de inversión en español, inglés o neerlandés.</p></div>
+          </div>
+          <div class="svc-ai"><b>Con IA</b><span>Modelos financieros con supuestos editables, y memorandos traducidos sin tocar las cifras.</span></div>
+          <div class="svc-foot"><a class="btn btn-ink btn-sm" href="#contacto" data-tab="inversion">Hablar de un proyecto</a></div>
+        </article>
+        <article class="svc-panel" id="svc-s6" role="tabpanel" aria-labelledby="svt-s6">
+          <p class="eyebrow">Para todas las partes</p>
+          <h3>Respaldo legal y diseño funcional</h3>
+          <p class="lead">Contratos que protegen a las partes y locales que cumplen el manual de la marca desde el primer día.</p>
+          <div class="svc-cols">
+            <div style="display:grid;gap:10px"><h4>Qué hacemos</h4><ul><li>Revisión jurídica del predio y de los permisos</li><li>Contratos de arriendo de largo plazo</li><li>Diseño funcional y adecuación del local</li><li>Coordinación de obra hasta la apertura</li></ul></div>
+            <div style="display:grid;gap:10px"><h4>Para quién</h4><p>Marcas, propietarios e inversionistas, en cualquier etapa del proyecto.</p><h4 style="margin-top:6px">Qué recibe</h4><p>Contrato firmado, permisos al día y local entregado.</p></div>
+          </div>
+          <div class="svc-ai"><b>Con IA</b><span>Extracción de cláusulas, plazos y renovaciones de cada contrato, para que nada venza sin aviso.</span></div>
+          <div class="svc-foot"><a class="btn btn-ink btn-sm" href="#contacto" data-tab="asesoria">Consultar</a></div>
+        </article>
+      </div>
+    </div>
+    <aside class="note">
+      <div class="note-h">Nota para Carlos · líneas de servicio <span class="tag tag-val">Por validar</span></div>
+      <p>Las seis líneas salen de lo que dice su sitio actual («visión estratégica, respaldo legal y diseño funcional»; «equilibrar intereses entre propietarios, inversionistas y marcas») y de su trabajo con cadenas, inversionistas y empresas. Hay que confirmar con Carlos cuáles ofrece, cómo las llama y si falta alguna.</p>
+      <p>El recuadro «Con IA» de cada servicio responde a lo que preguntan los clientes grandes: qué parte del trabajo es más rápida o más precisa. <span class="tag tag-inf">Inferido</span></p>
+    </aside>
+  </div>
+</section>
+
+<section id="clientes" class="sec sec-alt">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Clientes</p>
+      <h2>A quién acompañamos</h2>
+    </div>
+    <div class="aud">
+      <div><h3>Marcas y cadenas</h3><p>Que necesitan abrir puntos en el Caribe con criterio y a tiempo.</p><a href="#contacto" data-tab="cadena">Enviar un brief</a></div>
+      <div><h3>Empresas</h3><p>Que toman decisiones de infraestructura comercial y quieren una segunda opinión experta.</p><a href="#contacto" data-tab="asesoria">Solicitar asesoría</a></div>
+      <div><h3>Propietarios</h3><p>Con un local o lote que puede servirle a una marca, en arriendo o venta.</p><a href="#contacto" data-tab="predio">Postular un predio</a></div>
+      <div><h3>Inversionistas</h3><p>Que buscan un activo con arrendatario asegurado antes de construir.</p><a href="#contacto" data-tab="inversion">Hablar de un proyecto</a></div>
+    </div>
+    <aside class="note">
+      <div class="note-h">Nota para Carlos · empresas asesoradas <span class="tag tag-val">Pendiente</span></div>
+      <p>Aquí irán los logos o nombres de las empresas y cadenas con las que ha trabajado. Se publican solo con autorización de cada una.</p>
+      <div class="slots"><div class="slot">Empresa asesorada · por confirmar</div><div class="slot">Empresa asesorada · por confirmar</div><div class="slot">Cadena atendida · por confirmar</div><div class="slot">Proyecto de inversión · por confirmar</div></div>
+    </aside>
+  </div>
+</section>
+
+<section id="mercado" class="sec">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Contexto</p>
+      <h2>El comercio de barrio está en plena expansión</h2>
+    </div>
+    <div class="stats">
+      <div class="stat">
+        <b>300–400</b>
+        <p>aperturas que D1 se propone en 2026, sobre una red de 2.850 tiendas.</p>
+        <span class="src">Fuente: <a href="https://supermercadoaldia.cl/noticias/d1-evalua-el-salto-internacional-mientras-acelera-su-expansion-en-colombia" target="_blank" rel="noopener">Supermercado Al Día</a>, con entrevista de Valora Analitik, ago. 2026</span>
+      </div>
+      <div class="stat">
+        <b>225</b>
+        <p>tiendas que abrió Ara en 2025; hoy suma 1.653 y anuncia que seguirá creciendo.</p>
+        <span class="src">Fuente: <a href="https://www.elcolombiano.com/negocios/d1-ara-isimo-cuantas-tiendas-hay-colombia-FM33595761" target="_blank" rel="noopener">El Colombiano</a>, feb. 2026</span>
+      </div>
+      <div class="stat">
+        <b>4.700+</b>
+        <p>tiendas sumarán D1, Ara e Ísimo en Colombia durante 2026.</p>
+        <span class="src">Fuente: <a href="https://www.larepublica.co/empresas/las-grandes-cadenas-del-formato-hard-discount-superaran-4-700-tiendas-este-ano-4326966" target="_blank" rel="noopener">La República</a>, feb. 2026</span>
+      </div>
+    </div>
+    <p class="mkt-text">Cada apertura exige un predio con el área, el frente, el uso del suelo y el contrato correctos, y muchas exigen construir. Eso abre oportunidades para las marcas que llegan primero, para los propietarios bien preparados y para los inversionistas que financian locales a la medida.</p>
+    <aside class="note">
+      <div class="note-h">Nota para Carlos · cifras con fuente <span class="tag tag-obs">Observado</span></div>
+      <p>Datos públicos citados en prensa. Conviene actualizarlos cada trimestre; el mismo trabajo puede alimentar un boletín mensual para clientes.</p>
+    </aside>
+  </div>
+</section>
+
+<section id="datos" class="sec sec-alt">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Inteligencia territorial</p>
+      <h2>Decisiones con datos del territorio</h2>
+      <p class="lede">El Radar Cartagena reúne el catastro, la población, la competencia y el uso del suelo de la ciudad. Lo usamos en todos los servicios: para priorizar zonas, evaluar predios y respaldar estudios de viabilidad.</p>
+    </div>
+    <div class="radar">
+      <div>
+        <div class="figs">
+          <div class="fig"><b>153.672</b><span>predios calificables, tras excluir propiedad horizontal, condominios, informales y mejoras</span></div>
+          <div class="fig"><b>251.723</b><span>direcciones ligadas a su predio desde la nomenclatura oficial</span></div>
+          <div class="fig"><b>95,7 %</b><span>de los predios del barrio piloto, Torices, con frente medido</span></div>
+          <div class="fig"><b>10,8 m</b><span>frente mediano de un predio en Torices</span></div>
+        </div>
+        <p class="src" style="margin-top:12px">Fuente: Catastro AMB Cartagena en datos.gov.co, procesado por Infracomex (inventario del 23 de septiembre de 2026).</p>
+      </div>
+      <div style="display:grid;gap:12px">
+        <h4>Estado del sistema</h4>
+        <ul class="pipe">
+          <li><span>Catastro oficial de Cartagena<small>14 capas inventariadas: terrenos, construcciones, direcciones, manzanas</small></span><span class="st st-ok">Listo</span></li>
+          <li><span>Frente de cada predio<small>Calculado por manzana y validado en Torices</small></span><span class="st st-ok">Validado</span></li>
+          <li><span>Base de predios con exclusiones<small>Área, pisos, frente, esquina y condición de propiedad</small></span><span class="st st-run">En construcción</span></li>
+          <li><span>Población, vías y competencia<small>Censo por manzana y mapas abiertos</small></span><span class="st st-next">Siguiente</span></li>
+          <li><span>Uso del suelo y protección patrimonial<small>POT de Cartagena</small></span><span class="st st-wait">Pendiente de fuente</span></li>
+          <li><span>Puntaje por formato<small>Con los pesos del brief de cada cadena</small></span><span class="st st-next">Siguiente</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="sub-head" id="simulador">
+      <p class="eyebrow">Simulador</p>
+      <h3>Pruebe cómo se califica un predio</h3>
+      <p class="muted">Elija un formato y mueva las características del predio. El puntaje muestra cuánto aporta cada variable. Los pesos y umbrales son de ejemplo; con el brief de cada marca se calibran.</p>
+    </div>
+    <div class="sim">
+      <form class="panel" id="simForm" autocomplete="off" onsubmit="return false">
+        <div class="ctrl">
+          <span class="lab">Formato de la cadena</span>
+          <div class="seg" id="fmtSeg" role="group" aria-label="Formato de la cadena">
+            <button type="button" data-fmt="dd" aria-pressed="true">Descuento duro</button>
+            <button type="button" data-fmt="fa" aria-pressed="false">Farmacia</button>
+            <button type="button" data-fmt="co" aria-pressed="false">Conveniencia</button>
+          </div>
+        </div>
+        <div class="ctrl">
+          <span class="lab">Predios de ejemplo</span>
+          <div class="ex-list" id="exList"></div>
+        </div>
+        <div class="ctrl-grid">
+          <div class="ctrl"><label for="s-area">Área del predio <output id="o-area" for="s-area"></output></label><input type="range" id="s-area" min="50" max="2000" step="10"></div>
+          <div class="ctrl"><label for="s-frente">Frente <output id="o-frente" for="s-frente"></output></label><input type="range" id="s-frente" min="3" max="40" step="0.5"></div>
+          <div class="ctrl"><label for="s-pop">Habitantes a 500 m <output id="o-pop" for="s-pop"></output></label><input type="range" id="s-pop" min="1000" max="25000" step="500"></div>
+          <div class="ctrl"><label for="s-comp">Competidores a 500 m <output id="o-comp" for="s-comp"></output></label><input type="range" id="s-comp" min="0" max="6" step="1"></div>
+          <div class="ctrl" style="grid-column:1/-1"><label for="s-via">Tipo de vía</label>
+            <select id="s-via"><option value="local">Calle de barrio</option><option value="colectora">Vía principal del barrio</option><option value="arterial">Avenida o troncal</option></select>
+          </div>
+          <div class="checks">
+            <label class="chk"><input type="checkbox" id="s-esquina"> Predio esquinero</label>
+            <label class="chk"><input type="checkbox" id="s-uso"> El POT permite uso comercial</label>
+            <label class="chk"><input type="checkbox" id="s-patrimonio"> Está en zona de protección patrimonial</label>
+          </div>
+        </div>
+        <p class="sim-note">Con un predio real, habitantes y competidores salen del censo y de mapas abiertos. Aquí se ajustan a mano.</p>
+      </form>
+      <div class="panel" id="simResult" aria-live="polite">
+        <div class="res-head">
+          <div class="res-score" id="rScoreBox"><b id="rScore">0</b><span>/100</span></div>
+          <div class="res-side"><span class="pill" id="rVerdict"></span><span class="muted" id="rFmt" style="font-size:14px"></span></div>
+        </div>
+        <div style="display:grid;gap:10px"><h4>Filtros obligatorios</h4><ul class="filters" id="rFilters"></ul></div>
+        <div style="display:grid;gap:10px"><h4>Qué movió el puntaje</h4><div class="bars" id="rBars"></div><p class="scale-note">Todas las barras usan la misma escala: el ancho completo equivale a 30 puntos.</p></div>
+        <div style="display:grid;gap:10px"><h4>El mismo predio en otros formatos</h4><div class="others" id="rOthers"></div></div>
+      </div>
+    </div>
+    <aside class="note">
+      <div class="note-h">Nota para Carlos · Radar y simulador <span class="tag tag-obs">Observado</span> cifras · <span class="tag tag-val">Por validar</span> pesos y precios</div>
+      <ul>
+        <li>Las cifras salen del sistema real (inventario y piloto del 23/09/2026). El estado se muestra tal cual: no se vende como terminado.</li>
+        <li>Los umbrales de cada formato son hipótesis; el primer brief real de una cadena los reemplaza. Referente: GrowthFactor.</li>
+        <li>Formas de cobrarlo: carpeta de sitio por predio o incluida en el mandato; pre-diagnóstico gratis para propietarios y completo pagado; estudio de viabilidad a precio fijo; boletín por suscripción. Referencias publicadas: Spot2 promueve 5 % del contrato o un mes de renta para el asesor; Beto en el Retail cobra por hitos.</li>
+      </ul>
+    </aside>
+  </div>
+</section>
+
+<section id="ia" class="sec">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">IA con criterio</p>
+      <h2>Dónde trabaja la inteligencia artificial y dónde decide la persona</h2>
+      <p class="lede">La IA hace rápido el trabajo repetitivo de cada servicio. La estrategia, la lectura del barrio y la negociación siguen siendo trabajo de nuestro equipo.</p>
+    </div>
+    <div class="ia">
+      <div class="ia-col ai">
+        <h3>La IA hace</h3>
+        <ul>
+          <li><b>Ordena lo que llega</b><span>Mensajes, notas de voz y fotos se convierten en fichas estándar.</span></li>
+          <li><b>Lee el territorio</b><span>Cruza catastro, censo y mapas abiertos para cada zona y cada predio.</span></li>
+          <li><b>Redacta y traduce</b><span>Informes, carpetas de sitio y memorandos de inversión en español, inglés o neerlandés.</span></li>
+          <li><b>Vigila los contratos</b><span>Extrae cláusulas, plazos y renovaciones, y avisa antes de cada vencimiento.</span></li>
+          <li><b>Responde el mismo día</b><span>Nadie se queda sin respuesta mientras el equipo está en campo.</span></li>
+        </ul>
+      </div>
+      <div class="ia-col hu">
+        <h3>Nuestro equipo decide</h3>
+        <ul>
+          <li><b>La estrategia</b><span>Con la gerencia de cada cliente, a partir de sus metas.</span></li>
+          <li><b>Qué se presenta</b><span>Ningún predio ni informe sale sin revisión humana.</span></li>
+          <li><b>Lo que los datos no ven</b><span>Turismo, temporada de cruceros, eventos, vecinos y proyectos de ciudad.</span></li>
+          <li><b>La negociación</b><span>Con propietarios, inversionistas y marcas, hasta el contrato firmado.</span></li>
+        </ul>
+      </div>
+    </div>
+    <p class="ia-foot">Tratamos los datos personales de clientes, propietarios e inversionistas conforme a la Ley 1581 de 2012.</p>
+    <aside class="note">
+      <div class="note-h">Nota para Carlos · velocidad de respuesta <span class="tag tag-obs">Observado</span> en EE. UU. · <span class="tag tag-val">Por validar</span> en Colombia</div>
+      <p>Estudio de <a href="https://hbr.org/2011/03/the-short-life-of-online-sales-leads" target="_blank" rel="noopener">Harvard Business Review (2011)</a> sobre 2.241 empresas: las que contactan al interesado dentro de la primera hora tienen casi 7 veces más probabilidad de calificarlo que las que tardan una hora más, y más de 60 veces que las que tardan un día.</p>
+      <p>Como Carlos trabaja mejor con audios, el mismo sistema que ordena el mensaje de un propietario puede ordenar sus notas de voz después de cada visita o reunión.</p>
+    </aside>
+  </div>
+</section>
+
+<section id="contacto" class="sec sec-alt">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Contacto</p>
+      <h2>Cuéntenos qué necesita</h2>
+    </div>
+    <div class="tabs" role="tablist" aria-label="Tipo de contacto">
+      <button type="button" role="tab" id="tab-asesoria" aria-controls="pan-asesoria" aria-selected="true">Necesito asesoría</button>
+      <button type="button" role="tab" id="tab-cadena" aria-controls="pan-cadena" aria-selected="false">Soy una marca o cadena</button>
+      <button type="button" role="tab" id="tab-predio" aria-controls="pan-predio" aria-selected="false">Tengo un predio</button>
+      <button type="button" role="tab" id="tab-inversion" aria-controls="pan-inversion" aria-selected="false">Quiero invertir</button>
+    </div>
+
+    <!-- ASESORIA -->
+    <div role="tabpanel" id="pan-asesoria" aria-labelledby="tab-asesoria">
+      <div class="intake">
+        <form id="aForm" class="panel" autocomplete="off" novalidate>
+          <div class="fgrid">
+            <div class="fld"><label for="a-empresa">Empresa</label><input type="text" id="a-empresa"></div>
+            <div class="fld"><label for="a-sector">Sector</label><input type="text" id="a-sector" placeholder="Retail, salud, alimentos…"></div>
+            <div class="fld"><label for="a-tema">Tema</label>
+              <select id="a-tema"><option value="plan">Plan de expansión</option><option value="ciudad">Entrada a una ciudad nueva</option><option value="proyecto">Evaluar un proyecto o inmueble</option><option value="contrato">Negociación o contrato</option><option value="red">Reubicar o cerrar puntos</option><option value="otro">Otro</option></select></div>
+            <div class="fld"><label for="a-ciudades">Ciudades</label><input type="text" id="a-ciudades" value="Cartagena"></div>
+            <div class="fld full"><label for="a-detalle">¿Qué necesita decidir?</label><textarea id="a-detalle" rows="4" placeholder="Por ejemplo: queremos abrir tres puntos en Cartagena el próximo año y no sabemos si arrendar o construir."></textarea></div>
+            <div class="fld"><label for="a-nombre">Nombre y cargo</label><input type="text" id="a-nombre" autocomplete="name"></div>
+            <div class="fld"><label for="a-contacto">Correo o WhatsApp</label><input type="text" id="a-contacto"></div>
+            <label class="chk consent"><input type="checkbox" id="a-consent"> Autorizo a Infracomex a tratar estos datos para atender la solicitud, conforme a la Ley 1581 de 2012.</label>
+            <div class="form-actions"><button type="submit" class="btn btn-ink">Preparar envío</button><span class="form-msg" id="aMsg" aria-live="polite"></span></div>
+          </div>
+        </form>
+        <div class="side">
+          <div class="wa">
+            <div class="wa-top"><span>Así le llega a Infracomex</span><span>WhatsApp</span></div>
+            <pre id="aWa"></pre>
+            <div class="wa-act"><button type="button" class="btn btn-ghost btn-sm" id="aCopy" disabled>Copiar mensaje</button><a class="btn btn-accent btn-sm" id="aOpenWa" href="#" target="_blank" rel="noopener" hidden>Abrir WhatsApp</a></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CADENA -->
+    <div role="tabpanel" id="pan-cadena" aria-labelledby="tab-cadena" hidden>
+      <div class="intake">
+        <form id="cForm" class="panel" autocomplete="off" novalidate>
+          <div class="fgrid">
+            <div class="fld"><label for="c-marca">Marca o empresa</label><input type="text" id="c-marca" value="Cadena de ejemplo"></div>
+            <div class="fld"><label for="c-formato">Formato</label>
+              <select id="c-formato"><option value="dd">Descuento duro</option><option value="fa">Farmacia</option><option value="co">Conveniencia</option><option value="otro">Otro</option></select></div>
+            <div class="fld full"><label for="c-ciudades">Ciudades objetivo <small>separadas por coma</small></label><input type="text" id="c-ciudades" value="Cartagena, Barranquilla, Santa Marta"></div>
+            <div class="fld"><label for="c-amin">Área mínima <small>m²</small></label><input type="number" id="c-amin" value="300" min="0"></div>
+            <div class="fld"><label for="c-amax">Área máxima <small>m²</small></label><input type="number" id="c-amax" value="1500" min="0"></div>
+            <div class="fld"><label for="c-fmin">Frente mínimo <small>m</small></label><input type="number" id="c-fmin" value="10" min="0" step="0.5"></div>
+            <div class="fld"><label for="c-esquina">Esquina</label>
+              <select id="c-esquina"><option value="indispensable">Indispensable</option><option value="deseable" selected>Deseable</option><option value="indiferente">Indiferente</option></select></div>
+            <div class="fld"><label for="c-radio">Radio sin competencia <small>m</small></label><input type="number" id="c-radio" value="500" min="0" step="50"></div>
+            <div class="fld"><label for="c-modelo">Modelo preferido</label>
+              <select id="c-modelo"><option value="arriendo">Arriendo de local existente</option><option value="a_la_medida">Construcción a la medida</option><option value="ambos" selected>Ambos</option></select></div>
+            <div class="fld"><label for="c-aperturas">Aperturas buscadas</label><input type="number" id="c-aperturas" value="6" min="0"></div>
+            <div class="fld"><label for="c-plazo">Plazo <small>meses</small></label><input type="number" id="c-plazo" value="12" min="0"></div>
+            <div class="fld"><label for="c-nombre">Nombre y cargo</label><input type="text" id="c-nombre" autocomplete="name"></div>
+            <div class="fld"><label for="c-contacto">Correo o WhatsApp</label><input type="text" id="c-contacto"></div>
+            <label class="chk consent"><input type="checkbox" id="c-consent"> Autorizo a Infracomex a tratar estos datos para atender la solicitud, conforme a la Ley 1581 de 2012.</label>
+            <div class="form-actions"><button type="submit" class="btn btn-ink">Preparar envío</button><span class="form-msg" id="cMsg" aria-live="polite"></span></div>
+          </div>
+        </form>
+        <div class="side">
+          <div style="display:grid;gap:10px">
+            <h4>Así entra su brief al motor de puntaje</h4>
+            <pre class="yaml" id="cYaml"></pre>
+            <p class="muted" style="font-size:13px" id="cNote"></p>
+          </div>
+          <div class="wa">
+            <div class="wa-top"><span>Así le llega a Infracomex</span><span>WhatsApp</span></div>
+            <pre id="cWa"></pre>
+            <div class="wa-act"><button type="button" class="btn btn-ghost btn-sm" id="cCopy" disabled>Copiar mensaje</button><a class="btn btn-accent btn-sm" id="cOpenWa" href="#" target="_blank" rel="noopener" hidden>Abrir WhatsApp</a></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PREDIO -->
+    <div role="tabpanel" id="pan-predio" aria-labelledby="tab-predio" hidden>
+      <div class="intake">
+        <form id="pForm" class="panel" autocomplete="off" novalidate>
+          <div class="paste">
+            <div class="paste-top">
+              <label for="p-texto" style="font-weight:600;font-size:14px">Describa su predio como lo haría por WhatsApp</label>
+              <span class="badge">Mensaje de ejemplo</span>
+            </div>
+            <textarea id="p-texto" rows="5">Buenas tardes. Tengo un lote esquinero en el barrio Crespo, de unos 480 m2, con frente de 20 metros sobre la calle principal y 24 por el costado. Está desocupado. Lo arriendo para cadena, pido 18 millones mensuales. Soy Luis, me puede escribir a este mismo número.</textarea>
+            <div class="form-actions" style="grid-column:auto">
+              <button type="button" class="btn btn-accent btn-sm" id="pParse">Ordenar datos</button>
+              <span class="parse-msg" id="pParseMsg" aria-live="polite"></span>
+            </div>
+          </div>
+          <div class="fgrid">
+            <div class="fld"><label for="p-tipo">Tipo de predio</label>
+              <select id="p-tipo"><option value="">Seleccione</option><option value="lote">Lote</option><option value="local">Local</option><option value="casa">Casa</option><option value="bodega">Bodega</option></select></div>
+            <div class="fld"><label for="p-oferta">Lo ofrece en</label>
+              <select id="p-oferta"><option value="">Seleccione</option><option value="arriendo">Arriendo</option><option value="venta">Venta</option></select></div>
+            <div class="fld"><label for="p-barrio">Barrio o dirección</label><input type="text" id="p-barrio"></div>
+            <div class="fld"><label for="p-ciudad">Ciudad</label><input type="text" id="p-ciudad" value="Cartagena"></div>
+            <div class="fld"><label for="p-area">Área del terreno <small>m²</small></label><input type="number" id="p-area" min="0" inputmode="decimal"></div>
+            <div class="fld"><label for="p-frente">Frente <small>metros</small></label><input type="number" id="p-frente" min="0" step="0.1" inputmode="decimal"></div>
+            <div class="fld"><label for="p-esquina">¿Es esquinero?</label>
+              <select id="p-esquina"><option value="">No sé</option><option value="si">Sí</option><option value="no">No</option></select></div>
+            <div class="fld"><label for="p-via">¿Sobre qué vía?</label>
+              <select id="p-via"><option value="">No sé</option><option value="local">Calle de barrio</option><option value="colectora">Vía principal del barrio</option><option value="arterial">Avenida o troncal</option></select></div>
+            <div class="fld"><label for="p-pisos">Pisos construidos</label><input type="number" id="p-pisos" min="0" step="1" inputmode="numeric"></div>
+            <div class="fld"><label for="p-valor">Valor pretendido <small>COP, mensual si es arriendo</small></label><input type="number" id="p-valor" min="0" step="100000" inputmode="numeric"></div>
+            <div class="fld"><label for="p-nombre">Su nombre</label><input type="text" id="p-nombre" autocomplete="name"></div>
+            <div class="fld"><label for="p-wa">Su WhatsApp</label><input type="tel" id="p-wa" autocomplete="tel" placeholder="300 000 0000"></div>
+            <label class="chk consent"><input type="checkbox" id="p-consent"> Autorizo a Infracomex a tratar mis datos personales para evaluar el predio y contactarme, conforme a la Ley 1581 de 2012.</label>
+            <div class="form-actions"><button type="submit" class="btn btn-ink">Preparar envío</button><span class="form-msg" id="pMsg" aria-live="polite"></span></div>
+          </div>
+        </form>
+        <div class="side">
+          <div style="display:grid;gap:10px">
+            <h4>Pre-evaluación inmediata</h4>
+            <div class="evals" id="pEvals"></div>
+            <p class="muted" style="font-size:13px">Población y competencia las calculamos nosotros con el Radar, a partir de la ubicación.</p>
+          </div>
+          <div class="wa">
+            <div class="wa-top"><span>Así le llega a Infracomex</span><span>WhatsApp</span></div>
+            <pre id="pWa"></pre>
+            <div class="wa-act"><button type="button" class="btn btn-ghost btn-sm" id="pCopy" disabled>Copiar mensaje</button><a class="btn btn-accent btn-sm" id="pOpenWa" href="#" target="_blank" rel="noopener" hidden>Abrir WhatsApp</a></div>
+          </div>
+          <div class="ai-box ai-only">
+            <div style="display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap"><h4>Ficha para marcas</h4><span class="badge">Redactada con IA</span></div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap"><button type="button" class="btn btn-ink btn-sm" id="pFicha">Redactar ficha</button><button type="button" class="btn btn-ghost btn-sm" id="pFichaStop" hidden>Detener</button></div>
+            <div class="ai-out" id="pFichaOut" aria-live="polite"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- INVERSION -->
+    <div role="tabpanel" id="pan-inversion" aria-labelledby="tab-inversion" hidden>
+      <div class="intake">
+        <form id="iForm" class="panel" autocomplete="off" novalidate>
+          <div class="fgrid">
+            <div class="fld"><label for="i-capital">Capital disponible</label>
+              <select id="i-capital"><option value="menos_1000">Menos de $1.000 millones</option><option value="1000_3000" selected>$1.000 a $3.000 millones</option><option value="mas_3000">Más de $3.000 millones</option></select></div>
+            <div class="fld"><label for="i-ciudad">Ciudad de interés</label><input type="text" id="i-ciudad" value="Cartagena"></div>
+            <div class="fld"><label for="i-modelo">Modelo</label>
+              <select id="i-modelo"><option value="a_la_medida" selected>Lote y construcción a la medida</option><option value="local_arrendado">Local con arrendatario</option><option value="abierto">Abierto a propuestas</option></select></div>
+            <div class="fld"><label for="i-horizonte">Horizonte</label>
+              <select id="i-horizonte"><option value="5">5 años</option><option value="10" selected>10 años</option><option value="15">15 años o más</option></select></div>
+            <div class="fld"><label for="i-pais">País de residencia</label><input type="text" id="i-pais" value="Colombia"></div>
+            <div class="fld"><label for="i-idioma">Idioma de la propuesta</label>
+              <select id="i-idioma"><option value="es" selected>Español</option><option value="en">English</option><option value="nl">Nederlands</option></select></div>
+            <div class="fld"><label for="i-nombre">Nombre</label><input type="text" id="i-nombre" autocomplete="name"></div>
+            <div class="fld"><label for="i-contacto">Correo o WhatsApp</label><input type="text" id="i-contacto"></div>
+            <label class="chk consent"><input type="checkbox" id="i-consent"> Autorizo a Infracomex a tratar estos datos para atender la solicitud, conforme a la Ley 1581 de 2012.</label>
+            <div class="form-actions"><button type="submit" class="btn btn-ink">Preparar envío</button><span class="form-msg" id="iMsg" aria-live="polite"></span></div>
+          </div>
+        </form>
+        <div class="side">
+          <div class="wa">
+            <div class="wa-top"><span>Así le llega a Infracomex</span><span>WhatsApp</span></div>
+            <pre id="iWa"></pre>
+            <div class="wa-act"><button type="button" class="btn btn-ghost btn-sm" id="iCopy" disabled>Copiar mensaje</button><a class="btn btn-accent btn-sm" id="iOpenWa" href="#" target="_blank" rel="noopener" hidden>Abrir WhatsApp</a></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <aside class="note">
+      <div class="note-h">Nota para Carlos · cómo funciona en producción <span class="tag tag-val">Por validar</span> costos</div>
+      <ul>
+        <li>En este prototipo el mensaje se arma en el navegador y no se envía a ningún servidor. En producción cada formulario va a WhatsApp Business y a una hoja o CRM, con respuesta automática en minutos.</li>
+        <li>En «Tengo un predio», «Ordenar datos» usa IA cuando está disponible y, si no, reglas básicas. «Redactar ficha» solo aparece con IA.</li>
+        <li>El costo depende del volumen: API de WhatsApp por conversación más el modelo de IA por mensaje. Hay que cotizarlo con el volumen real que recibe Carlos.</li>
+        <li><b>Falta de Carlos:</b> número de WhatsApp de atención y correo.</li>
+      </ul>
+    </aside>
+  </div>
+</section>
+</main>
+
+<footer class="wrap">
+  <div class="foot">
+    <div style="display:grid;gap:8px">
+      <span class="brand-name">INFRACOMEX</span>
+      <span>Infraestructura Comercial y Expansión</span>
+      <span>Cartagena de Indias, Colombia · infracomex.co</span>
+      <span class="muted" style="font-size:13px">Tratamiento de datos personales conforme a la Ley 1581 de 2012.</span>
+    </div>
+    <div>
+      <h4>Servicios</h4>
+      <ul>
+        <li><a href="#svc-s1" data-svc="s1">Asesoría empresarial</a></li>
+        <li><a href="#svc-s2" data-svc="s2">Planes de expansión</a></li>
+        <li><a href="#svc-s3" data-svc="s3">Búsqueda de ubicaciones</a></li>
+        <li><a href="#svc-s4" data-svc="s4">Intermediación comercial</a></li>
+        <li><a href="#svc-s5" data-svc="s5">Estructuración e inversión</a></li>
+        <li><a href="#svc-s6" data-svc="s6">Respaldo legal y diseño funcional</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Fuentes de datos</h4>
+      <ul>
+        <li>Catastro AMB Cartagena · datos.gov.co</li>
+        <li>OpenStreetMap</li>
+        <li>POT de Cartagena</li>
+        <li>Prensa económica citada en cada cifra</li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+(function(){
+"use strict";
+/* ---------- configuración ---------- */
+const WHATSAPP_INFRACOMEX = ""; // número con indicativo, p. ej. "573001234567". Vacío = se oculta «Abrir WhatsApp».
+
+const $ = (s,r=document)=>r.querySelector(s);
+const $$ = (s,r=document)=>Array.from(r.querySelectorAll(s));
+const NF = new Intl.NumberFormat('es-CO');
+const NF1 = new Intl.NumberFormat('es-CO',{maximumFractionDigits:1});
+const clamp=(v,a=0,b=1)=>Math.max(a,Math.min(b,v));
+const lerp=(a,b,t)=>a+(b-a)*t;
+const ease=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
+const sm=(a,b,x)=>ease(clamp((x-a)/(b-a)));
+const COP = n => '$' + NF.format(Math.round(n));
+const esc = s => String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const store = {get(k){try{return localStorage.getItem(k)}catch(e){return null}}, set(k,v){try{localStorage.setItem(k,v)}catch(e){}}};
+function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+const RM = window.matchMedia ? matchMedia('(prefers-reduced-motion: reduce)') : {matches:false};
+
+/* ---------- notas de la propuesta ---------- */
+const nbtn=$('#notesToggle'), nlab=$('#notesLabel');
+function setNotes(on){
+  document.body.classList.toggle('notes-on',on);
+  nbtn.setAttribute('aria-pressed',on?'true':'false');
+  nlab.textContent = on ? 'Ocultar notas de la propuesta' : 'Ver notas de la propuesta';
+  store.set('infracomex-notas', on?'1':'0');
+}
+nbtn.addEventListener('click',()=>setNotes(!document.body.classList.contains('notes-on')));
+setNotes(location.hash==='#notas' || store.get('infracomex-notas')==='1');
+
+/* =====================================================================
+   HISTORIA ANIMADA — del planeta al predio (WebGL con three.js r128)
+   ===================================================================== */
+const story=$('#inicio'), stage=$('#stage'), head=$('#siteHead');
+const fades=$$('[data-a]',stage), railBtns=$$('.rail button',stage), progFill=$('#progFill'), cue=$('#cue'), credit=$('#credit');
+const RANGES=[[.1,.22],[.22,.38],[.38,.54],[.54,.7],[.7,.84],[.84,1.01]];
+const LOW=(navigator.hardwareConcurrency||8)<=4 && (navigator.deviceMemory||8)<=4;
+let W=0,H=0,p=0,target=0,running=false,visible=true,lastDraw=0,staticMode=false,autoT0=0,creditTxt='';
+
+function initGL(){
+  const T=window.THREE; if(!T) return null;
+  const canvas=$('#gl'); let renderer;
+  try{ renderer=new T.WebGLRenderer({canvas,antialias:!LOW,powerPreference:'high-performance'}); }catch(e){ return null; }
+  if(!renderer || !renderer.getContext()) return null;
+  renderer.setClearColor(0x02050b,1);
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio||1, LOW?1:1.6));
+  const labels=$('#labels'), leaderEls=$$('#leaders line');
+  const el=(cls,html)=>{ const e=document.createElement('div'); e.className=cls; e.innerHTML=html; labels.appendChild(e); return e; };
+  const aniso=Math.min(8,renderer.capabilities.getMaxAnisotropy());
+  const load=(src,cb)=>new T.TextureLoader().load(src,t=>{ t.anisotropy=aniso; cb(t); lastDraw=0; schedule(); },undefined,()=>{});
+  const cvTex=draw=>{ const c=document.createElement('canvas'); c.width=c.height=128; draw(c.getContext('2d')); return new T.CanvasTexture(c); };
+  const glowTex=cvTex(g=>{ const gr=g.createRadialGradient(64,64,0,64,64,64); gr.addColorStop(0,'rgba(255,255,255,1)'); gr.addColorStop(.18,'rgba(255,255,255,.65)'); gr.addColorStop(.5,'rgba(255,255,255,.12)'); gr.addColorStop(1,'rgba(255,255,255,0)'); g.fillStyle=gr; g.fillRect(0,0,128,128); });
+  const ringTex=cvTex(g=>{ g.strokeStyle='#fff'; g.lineWidth=6; g.beginPath(); g.arc(64,64,54,0,Math.PI*2); g.stroke(); });
+  const addMat=o=>Object.assign({transparent:true,depthWrite:false,blending:T.AdditiveBlending},o);
+  const tmp=new T.Vector3(), tmp2=new T.Vector3();
+  const track=(keys,p)=>{ if(p<=keys[0][0]) return [keys[0][1],keys[0][2]];
+    for(let k=1;k<keys.length;k++){ if(p<=keys[k][0]){ const a=keys[k-1],b=keys[k],t=ease(clamp((p-a[0])/(b[0]-a[0])));
+      return [[0,1,2].map(i=>lerp(a[1][i],b[1][i],t)),[0,1,2].map(i=>lerp(a[2][i],b[2][i],t))]; } }
+    const l=keys[keys.length-1]; return [l[1],l[2]]; };
+  let copyRight=0;
+  function place(e,world,cam,op,xf,keep){ tmp.copy(world).project(cam);
+    let x=(tmp.x*.5+.5)*W, y=(-tmp.y*.5+.5)*H; const o=(tmp.z>1||tmp.z<-1)?0:op;
+    if(keep&&o>0){ const hw=e.offsetWidth/2+8, hh=e.offsetHeight/2+8, minX=W>=760?copyRight+hw+12:hw;
+      x=clamp(x,minX,Math.max(minX,W-hw)); y=clamp(y,72+hh,Math.max(72+hh,(W<760?H*.55:H)-hh)); }
+    e.style.opacity=o.toFixed(3); if(o>0) e.style.transform=`translate(${x.toFixed(1)}px,${y.toFixed(1)}px) ${xf||'translate(-50%,-50%)'}`; return [x,y,o]; }
+
+  /* ---------------- GLOBO ---------------- */
+  const gScene=new T.Scene();
+  const gCam=new T.PerspectiveCamera(42,1,.005,400);
+  const earth=new T.Group(); gScene.add(earth);
+  const SUN=new T.Vector3(-.5,.42,.76).normalize();
+  const seg=LOW?72:128;
+  const eVert=`varying vec2 vUv; varying vec3 vN; varying vec3 vWP;
+    void main(){ vUv=uv; vN=normalize(mat3(modelMatrix)*normal); vec4 wp=modelMatrix*vec4(position,1.0); vWP=wp.xyz; gl_Position=projectionMatrix*viewMatrix*wp; }`;
+  const eu={dayMap:{value:null},nightMap:{value:null},waterMap:{value:null},sunDir:{value:SUN},uReady:{value:0}};
+  earth.add(new T.Mesh(new T.SphereGeometry(1,seg,seg*3/4|0),new T.ShaderMaterial({uniforms:eu,vertexShader:eVert,fragmentShader:`
+    uniform sampler2D dayMap,nightMap,waterMap; uniform vec3 sunDir; uniform float uReady;
+    varying vec2 vUv; varying vec3 vN; varying vec3 vWP;
+    void main(){
+      vec3 N=normalize(vN), V=normalize(cameraPosition-vWP), L=normalize(sunDir);
+      vec3 day=texture2D(dayMap,vUv).rgb, night=texture2D(nightMap,vUv).rgb; float water=texture2D(waterMap,vUv).r;
+      float ndl=dot(N,L), dm=smoothstep(-.18,.28,ndl);
+      vec3 col=day*(.1+1.15*max(ndl,0.));
+      vec3 Hh=normalize(L+V); float sp=pow(max(dot(N,Hh),0.),60.)*water;
+      col+=vec3(.55,.8,1.)*sp*.6*dm;
+      vec3 nc=night*vec3(1.,.8,.52)*1.6+day*.02;
+      col=mix(nc,col,dm)*vec3(.86,1.02,1.15);
+      float fr=pow(1.-max(dot(N,V),0.),2.4);
+      col+=vec3(.2,.7,1.)*fr*(.3+.7*dm)*.95;
+      gl_FragColor=vec4(col*uReady+vec3(.0,.02,.04)*(1.-uReady),1.);
+    }`})));
+  const cu0={cloudMap:{value:null},sunDir:{value:SUN},uReady:{value:0}};
+  const clouds=new T.Mesh(new T.SphereGeometry(1.011,seg,seg*3/4|0),new T.ShaderMaterial({uniforms:cu0,vertexShader:eVert,transparent:true,depthWrite:false,fragmentShader:`
+    uniform sampler2D cloudMap; uniform vec3 sunDir; uniform float uReady; varying vec2 vUv; varying vec3 vN; varying vec3 vWP;
+    void main(){ vec3 N=normalize(vN); float ndl=dot(N,normalize(sunDir)); float a=texture2D(cloudMap,vUv).r;
+      float lit=.05+1.*smoothstep(-.15,.55,ndl); gl_FragColor=vec4(vec3(.93,.97,1.)*lit,a*.9*uReady); }`}));
+  earth.add(clouds);
+  const atmU={uOp:{value:1}};
+  gScene.add(new T.Mesh(new T.SphereGeometry(1.075,seg,seg*3/4|0),new T.ShaderMaterial({uniforms:atmU,side:T.BackSide,transparent:true,depthWrite:false,blending:T.AdditiveBlending,
+    vertexShader:`varying vec3 vNV; void main(){ vNV=normalize(normalMatrix*normal); gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.); }`,
+    fragmentShader:`uniform float uOp; varying vec3 vNV; void main(){ float i=pow(clamp(-vNV.z,0.,1.),1.7)*2.6; gl_FragColor=vec4(vec3(.22,.68,1.)*i*uOp,1.); }`})));
+  { const n=LOW?900:1800, pos=new Float32Array(n*3), col=new Float32Array(n*3), rr=mulberry32(5);
+    for(let k=0;k<n;k++){ const u=rr()*2-1, th=rr()*Math.PI*2, r=Math.sqrt(1-u*u), b=.35+rr()*.65; pos.set([r*Math.cos(th)*90,u*90,r*Math.sin(th)*90],k*3); col.set([b*.82,b*.9,b],k*3); }
+    const sg=new T.BufferGeometry(); sg.setAttribute('position',new T.BufferAttribute(pos,3)); sg.setAttribute('color',new T.BufferAttribute(col,3));
+    gScene.add(new T.Points(sg,new T.PointsMaterial({size:1.25,sizeAttenuation:false,vertexColors:true,transparent:true,opacity:.85,depthWrite:false}))); }
+  load('assets/earth-day.jpg',t=>{eu.dayMap.value=t;});
+  load('assets/earth-night.jpg',t=>{eu.nightMap.value=t;});
+  load('assets/earth-water.jpg',t=>{eu.waterMap.value=t;});
+  load('assets/earth-clouds.jpg',t=>{cu0.cloudMap.value=t;});
+  let readyT0=0;
+
+  const ll=(lat,lon,r=1)=>{ const ph=(lon+180)*Math.PI/180, th=(90-lat)*Math.PI/180; return new T.Vector3(-Math.cos(ph)*Math.sin(th)*r,Math.cos(th)*r,Math.sin(ph)*Math.sin(th)*r); };
+  const CITIES=[['Cartagena',10.391,-75.479],['Barranquilla',10.964,-74.796],['Santa Marta',11.24,-74.199],['Riohacha',11.544,-72.907],['Valledupar',10.463,-73.253],['Sincelejo',9.305,-75.398],['Montería',8.75,-75.881]];
+  const vC=ll(CITIES[0][1],CITIES[0][2]);
+  const ROT_A=Math.atan2(-vC.x,vC.z), ROT_B=-(33-10.391)*Math.PI/180;
+  earth.rotation.set(ROT_B,ROT_A,0); earth.updateMatrixWorld(true);
+  const D=earth.localToWorld(vC.clone()).normalize();
+  const RC=earth.localToWorld(ll(10.15,-74.4)).normalize();
+  const UP=new T.Vector3(0,1,0), tn=v=>UP.clone().sub(v.clone().multiplyScalar(UP.dot(v))).normalize();
+  const ND=tn(D), NR=tn(RC);
+  const A=(...t)=>{ const v=new T.Vector3(); for(let i=0;i<t.length;i+=2) v.add(t[i].clone().multiplyScalar(t[i+1])); return v.toArray(); };
+  const GKEYS=[
+    [0,[0,0,1.45],[0,1.59,0]],
+    [.075,[0,0,1.45],[0,1.59,0]],
+    [.15,A(D,1.9,ND,-.42),A(D,.98,ND,.09)],
+    [.2,A(D,1.26,ND,-.14),A(D,.99)],
+    [.226,A(D,1.05),A(D,.9,ND,.02)],
+    [.874,A(D,1.05),A(D,.9,ND,.02)],
+    [.93,A(RC,1.19,NR,-.18),A(RC,.995,NR,.07)],
+    [1,A(RC,1.23,NR,-.2),A(RC,.995,NR,.07)]
+  ];
+  const marks=CITIES.map((c,i)=>{ const s=new T.Sprite(new T.SpriteMaterial(addMat({map:glowTex,color:i?0x86efac:0xc8ffdc,opacity:0}))); s.position.copy(ll(c[1],c[2],1.004)); earth.add(s); return s; });
+  const pulse=new T.Sprite(new T.SpriteMaterial(addMat({map:ringTex,color:0x86efac,opacity:0}))); pulse.position.copy(marks[0].position); earth.add(pulse);
+  const arcs=CITIES.slice(1).map(c=>{ const a=ll(CITIES[0][1],CITIES[0][2]), b=ll(c[1],c[2]), ang=a.angleTo(b), pts=[];
+    for(let k=0;k<=40;k++){ const t=k/40; pts.push(a.clone().lerp(b,t).normalize().multiplyScalar(1.004+Math.sin(Math.PI*t)*ang*.32)); }
+    const curve=new T.CatmullRomCurve3(pts), geo=new T.TubeGeometry(curve,64,.0011,6,false);
+    const m=new T.Mesh(geo,new T.MeshBasicMaterial(addMat({color:0x86efac,opacity:.95}))); geo.setDrawRange(0,0); earth.add(m);
+    const tip=new T.Sprite(new T.SpriteMaterial(addMat({map:glowTex,color:0xd9ffe6,opacity:0}))); earth.add(tip);
+    return {geo,curve,tip,count:geo.index.count}; });
+  const gLabels=CITIES.map((c,i)=>el('glabel'+(i?'':' main'),c[0]));
+  const LXF=['translate(calc(-100% - 14px),-50%)','translate(calc(-100% - 10px),-115%)','translate(-50%,-170%)','translate(10px,-50%)','translate(10px,-10%)','translate(10px,-50%)','translate(10px,-50%)'];
+  const arcT=new Array(arcs.length).fill(0);
+
+  function globeUpdate(p,t){
+    const spin=RM.matches?0:(1-sm(.05,.12,p))*t*.000016;
+    earth.rotation.set(ROT_B,ROT_A+spin,0); earth.updateMatrixWorld(true);
+    clouds.rotation.y=RM.matches?0:t*.0000042;
+    const [cp,ct]=track(GKEYS,p); gCam.position.set(...cp); gCam.lookAt(...ct); gCam.updateMatrixWorld();
+    const alt=gCam.position.length()-1; atmU.uOp.value=clamp((alt-.045)/.12);
+    if(eu.dayMap.value&&cu0.cloudMap.value){ if(!readyT0) readyT0=t; const r=RM.matches?1:clamp((t-readyT0)/700); eu.uReady.value=r; cu0.uReady.value=r; }
+    arcs.forEach((a,k)=>{ const at=sm(.905+k*.011,.945+k*.011,p); arcT[k]=at; a.geo.setDrawRange(0,Math.floor(at*a.count/6)*6);
+      a.tip.position.copy(a.curve.getPoint(Math.max(.001,at))); a.tip.material.opacity=(at>0&&at<1)?1:0;
+      a.tip.scale.setScalar(a.tip.getWorldPosition(tmp2).distanceTo(gCam.position)*.03); });
+    const fr=RM.matches?.5:(t/1700)%1;
+    marks.forEach((s,i)=>{ const wp=s.getWorldPosition(tmp2), dist=wp.distanceTo(gCam.position);
+      const vis = i===0 ? (p<.1?.7:1) : clamp((arcT[i-1]-.9)/.1);
+      s.material.opacity=vis; s.scale.setScalar(dist*(i?.03:.05));
+      const facing=wp.clone().normalize().dot(tmp.copy(gCam.position).sub(wp))>0;
+      const lv = i===0 ? ((p>.1&&p<.212)||p>.9 ? 1:0) : clamp((arcT[i-1]-.92)/.08);
+      place(gLabels[i],wp,gCam,facing?lv:0,(p<.3?'translate(12px,-50%)':LXF[i])); });
+    const pd=pulse.getWorldPosition(tmp2).distanceTo(gCam.position);
+    pulse.scale.setScalar(pd*.06*(1+fr*1.6)); pulse.material.opacity=(1-fr)*.9*(p<.1?.6:1);
+  }
+
+  /* ---------------- CIUDAD ---------------- */
+  const cScene=new T.Scene();
+  const cCam=new T.PerspectiveCamera(45,1,.1,1200);
+  const NB=9, BK=4, SW=1.3, PER=BK+SW, HALF=NB*PER/2, COAST=-HALF-1.4;
+  const bx=i=>-HALF+SW/2+i*PER;
+  const lot=(i,j,a,b)=>({x0:bx(i)+a*2,x1:bx(i)+a*2+2,z0:bx(j)+b*(4/3),z1:bx(j)+(b+1)*(4/3)});
+  const LOT=lot(6,4,1,2), LX=(LOT.x0+LOT.x1)/2, LZ=(LOT.z0+LOT.z1)/2;
+  const F1=lot(2,2,0,1), F2=lot(4,7,1,0);
+  const ctr=o=>[(o.x0+o.x1)/2,(o.z0+o.z1)/2];
+  const PARKS=new Set(['2,6','5,1']);
+  const CSUN=new T.Vector3(-.62,.3,-.55).normalize();
+  const cu={uSun:{value:CSUN},uSunCol:{value:new T.Vector3(1.,.7,.48)},uFogColor:{value:new T.Vector3(.055,.14,.19)},uFogDensity:{value:.0102},
+    uHeat:{value:0},uScan:{value:-60},uScanOn:{value:0},uNight:{value:1},uTime:{value:0},
+    uC0:{value:new T.Vector3(LX,LZ,1)},uC1:{value:new T.Vector3(...ctr(F1),.75)},uC2:{value:new T.Vector3(...ctr(F2),.6)},
+    uLot:{value:0},uLotR:{value:new T.Vector4(LOT.x0,LOT.z0,LOT.x1,LOT.z1)},uHalf:{value:HALF},uP:{value:PER},uS:{value:SW},uB:{value:BK},uAve:{value:new T.Vector2(5*PER,0)},uCoast:{value:COAST}};
+  const COMMON=`uniform vec3 uC0,uC1,uC2,uFogColor; uniform float uFogDensity;
+    float g2(vec2 p,vec3 c){ vec2 d=p-c.xy; return c.z*exp(-dot(d,d)/120.); }
+    float demand(vec2 p){ return clamp(g2(p,uC0)+g2(p,uC1)+g2(p,uC2),0.,1.); }
+    float hash(vec2 p){ return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453); }
+    vec3 fogIt(vec3 col,vec3 wp){ float d=length(wp-cameraPosition); float f=1.-exp(-pow(d*uFogDensity,2.)); return mix(col,uFogColor,f); }`;
+  const wpVert=`varying vec3 vWP; void main(){ vec4 wp=modelMatrix*vec4(position,1.); vWP=wp.xyz; gl_Position=projectionMatrix*viewMatrix*wp; }`;
+  const bVert=`attribute vec3 aColor; attribute float aSeed; varying vec3 vN; varying vec3 vWP; varying vec3 vCol; varying float vSeed;
+    void main(){ mat4 m=modelMatrix*instanceMatrix; vec4 wp=m*vec4(position,1.); vWP=wp.xyz; vN=normalize(mat3(m)*normal); vCol=aColor; vSeed=aSeed; gl_Position=projectionMatrix*viewMatrix*wp; }`;
+  const bFrag=`uniform vec3 uSun,uSunCol; uniform float uHeat,uScan,uScanOn,uNight,uNew,uOpen,uGlow;
+    varying vec3 vN; varying vec3 vWP; varying vec3 vCol; varying float vSeed;
+    ${COMMON}
+    void main(){
+      vec3 N=normalize(vN); float hemi=.5+.5*N.y;
+      vec3 amb=mix(vec3(.03,.045,.065),vec3(.19,.29,.4),hemi);
+      float ndl=max(dot(N,normalize(uSun)),0.);
+      vec3 col=vCol*(amb+uSunCol*ndl*.85);
+      if(abs(N.y)<.5){
+        float u=abs(N.x)>.5?vWP.z:vWP.x;
+        if(uNew>.5){
+          float win=step(.08,vWP.y)*step(vWP.y,.62);
+          col=mix(col,mix(vec3(.04,.09,.13),vec3(1.,.86,.62)*1.3,uOpen),win*.92);
+        } else {
+          vec2 gc=vec2(u*2.4,vWP.y*2.); vec2 cell=floor(gc); vec2 f=fract(gc);
+          float win=step(.22,f.x)*step(f.x,.78)*step(.3,f.y)*step(f.y,.8)*step(.3,vWP.y);
+          float on=step(.5,hash(cell+vSeed*37.));
+          vec3 lit=vec3(1.,.76,.45)*(.7+.35*hash(cell+3.7));
+          vec3 glass=vec3(.035,.08,.12)+vec3(.05,.12,.16)*(1.-hemi);
+          col=mix(col,mix(glass,lit,on*uNight),win*.9);
+        }
+      } else { col*=1.05; }
+      float d=demand(vWP.xz);
+      col+=mix(vec3(.08,.55,.65),vec3(.45,.95,.62),d)*d*uHeat*(N.y>.5?.8:.28);
+      float sp=(vWP.x+vWP.z)*.7071;
+      col+=vec3(.35,.9,1.)*exp(-pow(sp-uScan,2.)*.35)*uScanOn*.55;
+      col+=uGlow*vec3(.25,.8,.55);
+      gl_FragColor=vec4(fogIt(col,vWP),1.);
+    }`;
+  const gFrag=`uniform float uHeat,uScan,uScanOn,uNight,uLot,uHalf,uP,uS,uB; uniform vec4 uLotR; uniform vec2 uAve; varying vec3 vWP;
+    ${COMMON}
+    void main(){
+      vec2 p=vWP.xz, g=p+vec2(uHalf), m=mod(g,uP);
+      float ib=step(uS*.5,m.x)*step(m.x,uS*.5+uB)*step(uS*.5,m.y)*step(m.y,uS*.5+uB);
+      float inCity=step(0.,g.x)*step(g.x,uHalf*2.)*step(0.,g.y)*step(g.y,uHalf*2.);
+      vec3 col=mix(vec3(.03,.042,.055),vec3(.068,.082,.098),ib);
+      vec2 bi=floor(g/uP);
+      float park=((bi.x==2.&&bi.y==6.)||(bi.x==5.&&bi.y==1.))?1.:0.;
+      col=mix(col,vec3(.03,.085,.05)+hash(floor(p*3.))*.025,park*ib);
+      float dx=min(m.x,uP-m.x), dz=min(m.y,uP-m.y);
+      float lampV=exp(-(pow(dx-.5,2.)+pow(mod(g.y,1.77)-.885,2.))*7.)*step(dx,uS*.5);
+      float lampH=exp(-(pow(dz-.5,2.)+pow(mod(g.x,1.77)-.885,2.))*7.)*step(dz,uS*.5);
+      float ave=exp(-pow(g.y-uAve.x,2.)*6.);
+      col+=vec3(1.,.64,.3)*(lampV+lampH*(1.+ave*1.6))*.3*uNight;
+      col+=vec3(.85,.85,.75)*step(.55,fract(g.x*.6))*exp(-pow(g.y-uAve.x,2.)*120.)*.12;
+      col=mix(vec3(.04,.052,.055),col,inCity);
+      float d=demand(p); vec3 hc=mix(vec3(.08,.55,.65),vec3(.45,.95,.62),d);
+      float grid=max(step(.93,fract(m.x*1.5)),step(.93,fract(m.y*1.5)));
+      col+=hc*d*uHeat*(.8*ib+.18)*inCity + hc*grid*ib*uHeat*.32*inCity;
+      float sp=(p.x+p.y)*.7071;
+      col+=vec3(.35,.9,1.)*exp(-pow(sp-uScan,2.)*.5)*uScanOn*.9;
+      float inL=step(uLotR.x,p.x)*step(p.x,uLotR.z)*step(uLotR.y,p.y)*step(p.y,uLotR.w);
+      col=mix(col,vec3(.13,.1,.075)+hash(floor(p*9.))*.03,inL);
+      float e=min(min(p.x-uLotR.x,uLotR.z-p.x),min(p.y-uLotR.y,uLotR.w-p.y));
+      col+=vec3(.5,1.,.7)*inL*(1.-smoothstep(0.,.07,e))*uLot*1.6 + vec3(.3,.9,.6)*inL*uLot*.12;
+      gl_FragColor=vec4(fogIt(col,vWP),1.);
+    }`;
+  const wFrag=`uniform float uTime,uNight,uCoast; uniform vec3 uSun; varying vec3 vWP;
+    ${COMMON}
+    void main(){
+      vec3 V=normalize(cameraPosition-vWP);
+      float w=sin(vWP.x*1.3+uTime*.7)*sin(vWP.z*1.1-uTime*.5)+.5*sin((vWP.x-vWP.z)*2.7+uTime*1.1);
+      vec3 n=normalize(vec3(w*.08,1.,w*.05));
+      float fr=pow(1.-max(dot(V,n),0.),3.);
+      vec3 col=mix(vec3(.01,.035,.055),vec3(.08,.22,.3),fr);
+      vec3 R=reflect(-V,n); col+=vec3(1.,.62,.38)*pow(max(dot(R,normalize(uSun)),0.),40.)*.9;
+      float nc=exp(-(uCoast-vWP.x)*.3);
+      col+=vec3(1.,.72,.42)*pow(max(0.,sin(vWP.z*2.1+w)*.5+.5),10.)*nc*.22*uNight;
+      gl_FragColor=vec4(fogIt(col,vWP),1.);
+    }`;
+  const sky=new T.Mesh(new T.SphereGeometry(700,32,16),new T.ShaderMaterial({uniforms:{uSun:cu.uSun},side:T.BackSide,depthWrite:false,
+    vertexShader:`varying vec3 vDir; void main(){ vDir=position; gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.); }`,
+    fragmentShader:`uniform vec3 uSun; varying vec3 vDir;
+      void main(){ vec3 d=normalize(vDir); float h=d.y;
+        vec3 col=mix(vec3(.055,.14,.19),vec3(.01,.022,.05),smoothstep(-.02,.45,h));
+        float az=max(dot(normalize(d.xz+1e-5),normalize(uSun.xz)),0.);
+        col+=vec3(.95,.45,.25)*exp(-max(h,0.)*9.)*pow(az,5.)*.55 + vec3(.2,.6,.6)*exp(-max(h,0.)*14.)*.12;
+        vec2 st=floor(vec2(atan(d.z,d.x)*140.,h*140.));
+        col+=vec3(step(.9975,fract(sin(dot(st,vec2(12.9898,78.233)))*43758.5453))*smoothstep(.18,.55,h))*.8;
+        gl_FragColor=vec4(col,1.); }`}));
+  sky.renderOrder=-1; cScene.add(sky);
+  const gGeo=new T.PlaneGeometry(220,220).rotateX(-Math.PI/2).translate(COAST+110,0,0);
+  cScene.add(new T.Mesh(gGeo,new T.ShaderMaterial({uniforms:cu,vertexShader:wpVert,fragmentShader:gFrag})));
+  const wGeo=new T.PlaneGeometry(260,260).rotateX(-Math.PI/2).translate(COAST-130,-.02,0);
+  cScene.add(new T.Mesh(wGeo,new T.ShaderMaterial({uniforms:cu,vertexShader:wpVert,fragmentShader:wFrag})));
+
+  // edificios
+  const rC=mulberry32(21), inst=[];
+  const PAL=[[.62,.5,.3],[.36,.48,.58],[.6,.4,.36],[.45,.52,.44],[.58,.56,.5],[.5,.46,.42]];
+  for(let i=0;i<NB;i++) for(let j=0;j<NB;j++){ if(PARKS.has(i+','+j)) continue;
+    for(let a=0;a<2;a++) for(let b=0;b<3;b++){
+      if(i===6&&j===4&&a===1&&b===2) continue;
+      if(rC()<.06) continue;
+      const L=lot(i,j,a,b), inset=.13+rC()*.1, tower=(i<=1&&j<=3&&rC()<.72)||(i===2&&j<=1&&rC()<.4);
+      const h=tower?3.5+rC()*8.5:.55+Math.floor(rC()*4)*.5+rC()*.2;
+      const base=tower?[.3,.36,.43]:PAL[Math.floor(rC()*PAL.length)], k=.8+rC()*.3;
+      inst.push({x:(L.x0+L.x1)/2,z:(L.z0+L.z1)/2,w:(L.x1-L.x0)-inset*2,d:(L.z1-L.z0)-inset*2,h,c:base.map(v=>v*k),s:rC()});
+    } }
+  const box=new T.BoxGeometry(1,1,1).translate(0,.5,0);
+  const bGeo=box.clone(), cols=new Float32Array(inst.length*3), seeds=new Float32Array(inst.length);
+  inst.forEach((b,k)=>{ cols.set(b.c,k*3); seeds[k]=b.s; });
+  bGeo.setAttribute('aColor',new T.InstancedBufferAttribute(cols,3)); bGeo.setAttribute('aSeed',new T.InstancedBufferAttribute(seeds,1));
+  const bMat=new T.ShaderMaterial({uniforms:Object.assign({},cu,{uNew:{value:0},uOpen:{value:0},uGlow:{value:0}}),vertexShader:bVert,fragmentShader:bFrag});
+  const buildings=new T.InstancedMesh(bGeo,bMat,inst.length); buildings.frustumCulled=false;
+  const dmy=new T.Object3D();
+  inst.forEach((b,k)=>{ dmy.position.set(b.x,0,b.z); dmy.scale.set(b.w,b.h,b.d); dmy.updateMatrix(); buildings.setMatrixAt(k,dmy.matrix); });
+  cScene.add(buildings);
+  // nuevo local
+  const nGeo=box.clone(); nGeo.setAttribute('aColor',new T.InstancedBufferAttribute(new Float32Array([.86,.88,.9]),3)); nGeo.setAttribute('aSeed',new T.InstancedBufferAttribute(new Float32Array([.3]),1));
+  const nU=Object.assign({},cu,{uNew:{value:1},uOpen:{value:0},uGlow:{value:0}});
+  const newB=new T.InstancedMesh(nGeo,new T.ShaderMaterial({uniforms:nU,vertexShader:bVert,fragmentShader:bFrag}),1);
+  const BW=1.72, BD=1.06, BH=1.3; newB.visible=false; newB.frustumCulled=false; cScene.add(newB);
+  const sign=new T.Mesh(new T.BoxGeometry(BW*.86,.14,.05),new T.MeshBasicMaterial({color:0x86efac,transparent:true,opacity:0}));
+  sign.position.set(LX,.78,LOT.z1-.14+.03); cScene.add(sign);
+  const frontGlow=new T.Sprite(new T.SpriteMaterial(addMat({map:glowTex,color:0xffd08a,opacity:0}))); frontGlow.position.set(LX,.35,LOT.z1+.7); frontGlow.scale.setScalar(5); cScene.add(frontGlow);
+
+  // balizas
+  const beamGeo=new T.CylinderGeometry(.05,.05,1,8,1,true).translate(0,.5,0);
+  function beacon(x,z,color,hgt){ const g=new T.Group(); g.position.set(x,0,z);
+    const bm=new T.Mesh(beamGeo,new T.MeshBasicMaterial(addMat({color,opacity:0}))); bm.scale.set(1,hgt,1); g.add(bm);
+    const hd=new T.Sprite(new T.SpriteMaterial(addMat({map:glowTex,color,opacity:0}))); hd.position.y=hgt; hd.scale.setScalar(1.3); g.add(hd);
+    const bs=new T.Sprite(new T.SpriteMaterial(addMat({map:glowTex,color,opacity:0}))); bs.position.y=.12; bs.scale.setScalar(2.4); g.add(bs);
+    cScene.add(g); return {g,m:[[bm.material,.45],[hd.material,1],[bs.material,.7]]}; }
+  const setOp=(b,a)=>{ b.g.visible=a>.003; b.m.forEach(([m,k])=>m.opacity=a*k); };
+  const comps=[[8,7],[3,4],[1,7],[5,0],[7,1]].map(([i,j])=>{ const L=lot(i,j,0,0); return beacon(...ctr(L),0xff6b6b,4.2); });
+  const rP=mulberry32(33), cands=[];
+  const add=(L,fin,chosen)=>{ const [x,z]=ctr(L); const b=beacon(x,z,0x86efac,chosen?7:fin?5:3+rP()*1.4); b.fin=fin; b.chosen=chosen; b.a=rP()*.1; b.pass=.1+((x+z)*.7071+45)/90*.58; cands.push(b); };
+  add(LOT,true,true); add(F1,true,false); add(F2,true,false);
+  let guard=0; while(cands.length<30&&guard++<400){ const i=Math.floor(rP()*NB), j=Math.floor(rP()*NB); if(PARKS.has(i+','+j)||(i===6&&j===4)) continue; add(lot(i,j,Math.floor(rP()*2),Math.floor(rP()*3)),false,false); }
+  const ring=new T.Mesh(new T.RingGeometry(1.45,1.62,64).rotateX(-Math.PI/2),new T.MeshBasicMaterial(addMat({color:0x86efac,opacity:0,side:T.DoubleSide})));
+  ring.position.set(LX,.05,LZ); cScene.add(ring);
+  const scanU={uOp:{value:0}};
+  const scan=new T.Mesh(new T.PlaneGeometry(110,16),new T.ShaderMaterial({uniforms:scanU,transparent:true,depthWrite:false,blending:T.AdditiveBlending,side:T.DoubleSide,
+    vertexShader:`varying vec2 vUv; void main(){ vUv=uv; gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.); }`,
+    fragmentShader:`uniform float uOp; varying vec2 vUv; void main(){ float a=pow(1.-vUv.y,1.6)*smoothstep(0.,.15,vUv.x)*smoothstep(1.,.85,vUv.x); gl_FragColor=vec4(vec3(.35,.9,1.)*a*.38*uOp,1.); }`}));
+  scan.rotation.y=Math.PI/4; cScene.add(scan);
+
+  const CKEYS=[
+    [.226,[LX-8,96,LZ+74],[LX-4,0,LZ-2]],
+    [.27,[34,30,42],[2,0,2]],
+    [.37,[30,27,45],[2,0,3]],
+    [.46,[-4,31,48],[3,0,2]],
+    [.535,[LX+14,22,LZ+30],[LX-1,0,LZ-1]],
+    [.61,[LX+6.5,9.5,LZ+9],[LX,.2,LZ]],
+    [.69,[LX+7,9,LZ+8.5],[LX,.3,LZ]],
+    [.77,[LX+8.5,7.4,LZ+7.5],[LX,.9,LZ]],
+    [.842,[LX+11,8.5,LZ+6],[LX,1,LZ]],
+    [.874,[LX+14,110,LZ+40],[LX,0,LZ]]
+  ];
+  const TAGS=[['Viabilidad','Demanda y retorno',[LOT.x0-.6,3.3,LOT.z0-1.4],[LOT.x0,0,LOT.z0],.6],
+              ['Contrato','Arriendo de largo plazo',[LOT.x1+2,2.8,LOT.z0-.9],[LOT.x1,0,LOT.z0],.625],
+              ['Inversión','Socios y aportes',[LOT.x1+2.4,.9,LOT.z1+1.2],[LOT.x1,0,LOT.z1],.65],
+              ['Diseño','Manual de la marca',[LOT.x0-.2,.5,LOT.z1+2.4],[LOT.x0,0,LOT.z1],.675]]
+    .map(([t,s,pos,anc,a])=>({e:el('tag3d',`${t}<small>${s}</small>`),pos:new T.Vector3(...pos),anc:new T.Vector3(...anc),a}));
+  const dims=[['FRENTE',[LX,.05,LOT.z1+.45]],['FONDO',[LOT.x1+.55,.05,LZ]]].map(([t,pos])=>({e:el('dim3d',t),pos:new T.Vector3(...pos)}));
+  const openTag={e:el('tag3d','Apertura<small>Local entregado a la marca</small>'),pos:new T.Vector3(LX,BH+1.1,LZ)};
+  const cityLabels=[...TAGS.map(t=>t.e),...dims.map(d=>d.e),openTag.e];
+
+  function cityUpdate(p,t){
+    const t3=clamp((p-.38)/.16);
+    cu.uTime.value=t*.001;
+    cu.uHeat.value=sm(.25,.32,p)*(1-.55*sm(.56,.62,p));
+    const scanOn=sm(.4,.43,p)*(1-sm(.49,.505,p)); cu.uScanOn.value=scanOn; cu.uScan.value=lerp(-45,45,clamp((t3-.1)/.58));
+    scan.position.set(cu.uScan.value*.7071,8,cu.uScan.value*.7071); scanU.uOp.value=scanOn;
+    cu.uLot.value=sm(.575,.62,p);
+    comps.forEach((c,k)=>setOp(c,sm(.29+k*.008,.32+k*.008,p)*(1-.85*sm(.5,.58,p))));
+    cands.forEach(c=>{ let a=clamp((t3-c.a)/.08);
+      if(!c.fin) a*=1-clamp((t3-c.pass)/.06);
+      else if(!c.chosen) a*=1-clamp((t3-.8)/.08);
+      else a*=1-.9*sm(.6,.66,p);
+      setOp(c,a); });
+    const fr=RM.matches?.5:(t/1600)%1;
+    ring.material.opacity=clamp((t3-.7)/.08)*(1-sm(.64,.7,p))*(1-fr)*.9; ring.scale.setScalar(1+fr*.6);
+    const r5=sm(.71,.79,p); newB.visible=r5>.002;
+    dmy.position.set(LX,0,LZ); dmy.scale.set(BW,Math.max(.001,BH*r5),BD); dmy.updateMatrix(); newB.setMatrixAt(0,dmy.matrix); newB.instanceMatrix.needsUpdate=true;
+    const op=sm(.78,.82,p); nU.uOpen.value=op;
+    sign.material.opacity=clamp((r5-.9)/.1); frontGlow.material.opacity=op*.6;
+    const [cp,ct]=track(CKEYS,p); cCam.position.set(...cp); cCam.lookAt(...ct); cCam.updateMatrixWorld(); sky.position.copy(cCam.position);
+    const tf=1-sm(.7,.73,p);
+    const placed=[];
+    TAGS.forEach((g,k)=>{ const a=sm(g.a,g.a+.02,p)*tf; let [x,y,o]=place(g.e,g.pos,cCam,a,null,true); const L=leaderEls[k];
+      if(o>0){ const w=g.e.offsetWidth, h=g.e.offsetHeight;
+        for(const r of placed){ if(Math.abs(x-r.x)<(w+r.w)/2+6 && Math.abs(y-r.y)<(h+r.h)/2+6){ y=r.y+(h+r.h)/2+8; } }
+        g.e.style.transform=`translate(${x.toFixed(1)}px,${y.toFixed(1)}px) translate(-50%,-50%)`; placed.push({x,y,w,h}); }
+      tmp.copy(g.anc).project(cCam); const ax=(tmp.x*.5+.5)*W, ay=(-tmp.y*.5+.5)*H;
+      L.setAttribute('x1',x.toFixed(1)); L.setAttribute('y1',y.toFixed(1)); L.setAttribute('x2',ax.toFixed(1)); L.setAttribute('y2',ay.toFixed(1)); L.style.opacity=(o*.9).toFixed(3); });
+    dims.forEach(d=>place(d.e,d.pos,cCam,sm(.6,.63,p)*(1-sm(.71,.74,p))));
+    place(openTag.e,openTag.pos,cCam,sm(.79,.81,p)*(1-sm(.848,.862,p)),null,true);
+  }
+
+  return {
+    resize(w,h){ const cr=$('.copy',stage).getBoundingClientRect(), sr=stage.getBoundingClientRect(); copyRight=cr.right-sr.left; renderer.setSize(w,h,false); gCam.aspect=cCam.aspect=w/h; gCam.updateProjectionMatrix(); cCam.updateProjectionMatrix(); },
+    render(p,t){
+      const globe=p<.226||p>=.874, mob=W<760, sh=sm(.08,.14,p);
+      const cam=globe?gCam:cCam;
+      cam.setViewOffset(W,H,mob?0:-.16*W*sh,mob?.17*H*sh:0,W,H);
+      if(globe){ globeUpdate(p,t); cityLabels.forEach(e=>e.style.opacity=0); leaderEls.forEach(l=>l.style.opacity=0); }
+      else { cityUpdate(p,t); gLabels.forEach(e=>e.style.opacity=0); }
+      renderer.render(globe?gScene:cScene,cam);
+    }
+  };
+}
+const GL=initGL();
+if(!GL) story.classList.add('nogl');
+
+function setHeadH(){ document.documentElement.style.setProperty('--head-h',head.offsetHeight+'px'); }
+function resize(){ const r=stage.getBoundingClientRect(); W=Math.max(1,r.width); H=Math.max(1,r.height); if(GL) GL.resize(W,H); setHeadH(); }
+function updateDom(p){
+  fades.forEach(c=>{ const on=p>=+c.dataset.a && p<+c.dataset.b; if(on!==c.classList.contains('on')) c.classList.toggle('on',on); });
+  const idx=RANGES.findIndex(r=>p>=r[0]&&p<r[1]);
+  railBtns.forEach((b,k)=>b.classList.toggle('on',k===idx));
+  stage.classList.toggle('chapters',p>=.1);
+  progFill.style.width=(p*100).toFixed(2)+'%';
+  cue.classList.toggle('off',p>.02);
+  const c1=sm(.185,.222,p)*(1-sm(.228,.262,p)), c2=sm(.84,.868,p)*(1-sm(.878,.91,p));
+  const cs= p<.5 ? 1+1.4*clamp((p-.185)/.077) : 1+1.4*clamp((p-.84)/.07);
+  stage.style.setProperty('--cl',Math.max(c1,c2).toFixed(3)); stage.style.setProperty('--cs',cs.toFixed(3));
+  const globe=p<.226||p>=.874;
+  stage.style.setProperty('--aur',(globe?(p<.1?1:.4):0).toFixed(2));
+  const ct=globe?'Tierra: NASA Blue Marble y Black Marble':'Ciudad ilustrativa';
+  if(ct!==creditTxt){ creditTxt=ct; credit.textContent=ct; }
+}
+function computeTarget(){
+  const r=story.getBoundingClientRect();
+  head.classList.toggle('over', r.bottom>80);
+  if(staticMode) return;
+  const total=story.offsetHeight-stage.offsetHeight;
+  target= total>0 ? clamp(-r.top/total) : 0;
+  const sb=stage.getBoundingClientRect().bottom;
+  stage.style.setProperty('--cut',Math.max(0,Math.min(160,sb-window.innerHeight))+'px');
+}
+function frame(now){
+  running=false;
+  if(staticMode) target=((now-autoT0)/32000)%1;
+  const moving=Math.abs(target-p)>.0002;
+  p = moving ? p+(target-p)*(RM.matches?1:.12) : target;
+  if(moving || now-lastDraw>33){ if(GL) GL.render(p,now); updateDom(p); lastDraw=now; }
+  if(visible && (moving || !RM.matches || staticMode)) schedule();
+}
+function schedule(){ if(!running){ running=true; requestAnimationFrame(frame); } }
+function goTo(pp){
+  if(staticMode){ autoT0=performance.now()-pp*32000; return; }
+  const total=story.offsetHeight-stage.offsetHeight;
+  window.scrollTo({top:story.getBoundingClientRect().top+window.scrollY+pp*total+2,behavior:RM.matches?'auto':'smooth'});
+}
+railBtns.forEach(b=>b.addEventListener('click',()=>goTo(+b.dataset.go)));
+if(window.innerHeight>3000){ staticMode=true; story.classList.add('static'); autoT0=performance.now(); }
+window.addEventListener('scroll',()=>{computeTarget();schedule();},{passive:true});
+window.addEventListener('resize',()=>{resize();computeTarget();schedule();});
+try{ new ResizeObserver(()=>{resize();schedule();}).observe(stage); }catch(e){}
+try{ new IntersectionObserver(es=>{ visible=es[0].isIntersecting; if(visible) schedule(); }).observe(story); }catch(e){}
+if(document.fonts&&document.fonts.ready) document.fonts.ready.then(()=>{setHeadH();lastDraw=0;schedule();});
+resize(); computeTarget(); p=target; if(GL) GL.render(p,performance.now()); updateDom(p); schedule();
+
+/* ---------- servicios ---------- */
+const SVCS=['s1','s2','s3','s4','s5','s6'];
+function setSvc(id){
+  if(!SVCS.includes(id)) return;
+  SVCS.forEach(s=>{ const on=s===id; $('#svc-'+s).classList.toggle('on',on); const t=$('#svt-'+s); t.setAttribute('aria-selected',on?'true':'false'); t.tabIndex=on?0:-1; });
+}
+SVCS.forEach((s,i)=>{ const t=$('#svt-'+s);
+  t.addEventListener('click',()=>setSvc(s));
+  t.addEventListener('keydown',e=>{ if(e.key==='ArrowDown'||e.key==='ArrowUp'){ e.preventDefault(); const n=SVCS[(i+(e.key==='ArrowDown'?1:SVCS.length-1))%SVCS.length]; setSvc(n); $('#svt-'+n).focus(); } });
+});
+$$('[data-svc]').forEach(a=>a.addEventListener('click',()=>setSvc(a.dataset.svc)));
+setSvc('s1');
+
+/* ---------- motor de puntaje ---------- */
+const FORMATS = {
+  dd:{name:'Descuento duro', area:[300,600,1500], frenteMin:10, frenteIdeal:20, pop:[4000,16000], compMax:3,
+      via:{local:.3,colectora:1,arterial:.8}, w:{demanda:30,competencia:25,frente:15,esquina:10,via:10,area:10}},
+  fa:{name:'Farmacia', area:[80,180,450], frenteMin:5, frenteIdeal:12, pop:[3000,12000], compMax:4,
+      via:{local:.2,colectora:.7,arterial:1}, w:{demanda:25,competencia:20,frente:10,esquina:20,via:20,area:5}},
+  co:{name:'Conveniencia', area:[90,160,350], frenteMin:7, frenteIdeal:15, pop:[3000,12000], compMax:5,
+      via:{local:.3,colectora:.8,arterial:1}, w:{demanda:25,competencia:15,frente:10,esquina:20,via:25,area:5}}
+};
+const VAR_LABELS = {demanda:'Demanda a 500 m', competencia:'Competencia a 500 m', frente:'Frente', esquina:'Esquina', via:'Tipo de vía', area:'Área del predio'};
+const VIA_LABEL = {local:'Calle de barrio', colectora:'Vía principal del barrio', arterial:'Avenida o troncal'};
+const MAXW = 30;
+function scorePredio(p,key){
+  const f=FORMATS[key]; const [amin,aideal,amax]=f.area;
+  const areaOk=p.area>=amin && p.area<=amax, frenteOk=p.frente>=f.frenteMin;
+  const filters=[
+    {label:'Uso comercial permitido por el POT', ok:!!p.uso, detail:p.uso?'Sí':'No'},
+    {label:`Área entre ${NF.format(amin)} y ${NF.format(amax)} m²`, ok:areaOk, detail:`${NF.format(p.area)} m²`},
+    {label:`Frente de al menos ${NF.format(f.frenteMin)} m`, ok:frenteOk, detail:`${NF1.format(p.frente)} m`}
+  ];
+  const s={
+    demanda:clamp((p.pop-f.pop[0])/(f.pop[1]-f.pop[0])),
+    competencia:clamp(1-p.comp/f.compMax),
+    frente:clamp((p.frente-f.frenteMin)/(f.frenteIdeal-f.frenteMin)),
+    esquina:p.esquina?1:0,
+    via:f.via[p.via]??0,
+    area:!areaOk?0:(p.area<=aideal? .4+.6*(p.area-amin)/(aideal-amin) : 1-.6*(p.area-aideal)/(amax-aideal))
+  };
+  const val={demanda:`${NF.format(p.pop)} hab.`, competencia:p.comp===1?'1 tienda':`${p.comp} tiendas`, frente:`${NF1.format(p.frente)} m`,
+             esquina:p.esquina?'Sí':'No', via:VIA_LABEL[p.via], area:`${NF.format(p.area)} m²`};
+  const rows=Object.keys(f.w).map(k=>({key:k,label:VAR_LABELS[k],value:val[k],weight:f.w[k],points:f.w[k]*s[k]}));
+  const penalty=p.patrimonio?10:0;
+  const total=Math.round(clamp(rows.reduce((a,r)=>a+r.points,0)-penalty,0,100));
+  const pass=filters.every(x=>x.ok);
+  let verdict;
+  if(!pass) verdict={cls:'bad',text:'No cumple el brief'};
+  else if(total>=70) verdict={cls:'ok',text:'Presentar a la cadena'};
+  else if(total>=50) verdict={cls:'warn',text:'Visitar y validar'};
+  else verdict={cls:'bad',text:'Archivar'};
+  return {filters,rows,penalty,total,pass,verdict,fmt:f.name};
+}
+const EXAMPLES={
+  A:{name:'Lote esquinero sobre vía principal', area:540, frente:22, esquina:true, via:'colectora', pop:11500, comp:1, uso:true, patrimonio:false},
+  B:{name:'Local medianero sobre avenida', area:210, frente:9, esquina:false, via:'arterial', pop:14000, comp:2, uso:true, patrimonio:false},
+  C:{name:'Casa en calle de barrio, zona patrimonial', area:320, frente:8, esquina:false, via:'local', pop:7500, comp:0, uso:true, patrimonio:true}
+};
+const sim={fmt:'dd', ex:'A', ...EXAMPLES.A};
+const ctl={area:$('#s-area'),frente:$('#s-frente'),pop:$('#s-pop'),comp:$('#s-comp'),via:$('#s-via'),esquina:$('#s-esquina'),uso:$('#s-uso'),patrimonio:$('#s-patrimonio')};
+function buildExamples(){
+  $('#exList').innerHTML=Object.entries(EXAMPLES).map(([k,e])=>
+    `<button type="button" class="ex" data-ex="${k}" aria-pressed="${k===sim.ex}"><span><b>${k}</b> · ${esc(e.name)}</span><span class="mono">${NF.format(e.area)} m² · ${NF1.format(e.frente)} m</span></button>`).join('');
+  $$('#exList .ex').forEach(b=>b.addEventListener('click',()=>{ Object.assign(sim,EXAMPLES[b.dataset.ex]); sim.ex=b.dataset.ex; syncControls(); renderSim(); }));
+}
+function syncControls(){
+  ctl.area.value=sim.area; ctl.frente.value=sim.frente; ctl.pop.value=sim.pop; ctl.comp.value=sim.comp;
+  ctl.via.value=sim.via; ctl.esquina.checked=sim.esquina; ctl.uso.checked=sim.uso; ctl.patrimonio.checked=sim.patrimonio;
+}
+function readControls(){
+  sim.area=+ctl.area.value; sim.frente=+ctl.frente.value; sim.pop=+ctl.pop.value; sim.comp=+ctl.comp.value;
+  sim.via=ctl.via.value; sim.esquina=ctl.esquina.checked; sim.uso=ctl.uso.checked; sim.patrimonio=ctl.patrimonio.checked; sim.ex=null;
+}
+function renderSim(){
+  $('#o-area').textContent=NF.format(sim.area)+' m²';
+  $('#o-frente').textContent=NF1.format(sim.frente)+' m';
+  $('#o-pop').textContent=NF.format(sim.pop);
+  $('#o-comp').textContent=sim.comp;
+  $$('#exList .ex').forEach(b=>b.setAttribute('aria-pressed',b.dataset.ex===sim.ex?'true':'false'));
+  $$('#fmtSeg button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.fmt===sim.fmt?'true':'false'));
+  const r=scorePredio(sim,sim.fmt);
+  $('#rScore').textContent=r.total;
+  $('#rScoreBox').classList.toggle('dim',!r.pass);
+  const v=$('#rVerdict'); v.className='pill '+r.verdict.cls; v.textContent=r.verdict.text;
+  $('#rFmt').textContent='Formato: '+r.fmt+(r.pass?'':' · puntaje solo de referencia');
+  $('#rFilters').innerHTML=r.filters.map(f=>`<li><span class="ic ${f.ok?'y':'n'}" aria-hidden="true">${f.ok?'✓':'✕'}</span><span>${esc(f.label)}<span class="sr">${f.ok?' cumple':' no cumple'}</span></span><span class="d">${esc(f.detail)}</span></li>`).join('');
+  let bars=r.rows.map(x=>`<div class="bar-row"><div class="bar-lab"><span>${esc(x.label)}</span><span class="mono">${esc(x.value)}</span></div>
+     <div class="bar-line"><div class="bar-track" style="width:${(x.weight/MAXW*100).toFixed(2)}%"><div class="bar-fill" style="width:${(x.points/x.weight*100).toFixed(1)}%"></div></div><span class="bar-pts">${NF1.format(x.points)} / ${x.weight}</span></div></div>`).join('');
+  if(r.penalty){
+    bars+=`<div class="bar-row"><div class="bar-lab"><span>Riesgo patrimonial</span><span class="mono">zona de protección</span></div>
+     <div class="bar-line"><div class="bar-track" style="width:${(r.penalty/MAXW*100).toFixed(2)}%"><div class="bar-fill neg" style="width:100%"></div></div><span class="bar-pts">−${r.penalty}</span></div></div>`;
+  }
+  $('#rBars').innerHTML=bars;
+  $('#rOthers').innerHTML=Object.keys(FORMATS).filter(k=>k!==sim.fmt).map(k=>{
+    const o=scorePredio(sim,k);
+    return `<button type="button" class="other ${o.pass?'':'fail'}" data-fmt="${k}">${esc(FORMATS[k].name)} <b>${o.pass?o.total:'no cumple'}</b></button>`;
+  }).join('');
+  $$('#rOthers .other').forEach(b=>b.addEventListener('click',()=>{sim.fmt=b.dataset.fmt; renderSim();}));
+}
+Object.values(ctl).forEach(el=>{ el.addEventListener('input',()=>{readControls();renderSim();}); el.addEventListener('change',()=>{readControls();renderSim();}); });
+$$('#fmtSeg button').forEach(b=>b.addEventListener('click',()=>{sim.fmt=b.dataset.fmt;renderSim();}));
+
+/* ---------- pestañas de contacto ---------- */
+const TABS=['asesoria','cadena','predio','inversion'];
+function setTab(k){
+  TABS.forEach(t=>{ const on=t===k; $('#tab-'+t).setAttribute('aria-selected',on?'true':'false'); $('#tab-'+t).tabIndex=on?0:-1; $('#pan-'+t).hidden=!on; });
+}
+TABS.forEach((t,i)=>{
+  const b=$('#tab-'+t);
+  b.addEventListener('click',()=>setTab(t));
+  b.addEventListener('keydown',e=>{ if(e.key==='ArrowRight'||e.key==='ArrowLeft'){ const n=TABS[(i+(e.key==='ArrowRight'?1:TABS.length-1))%TABS.length]; setTab(n); $('#tab-'+n).focus(); } });
+});
+$$('a[data-tab]').forEach(a=>a.addEventListener('click',()=>setTab(a.dataset.tab)));
+setTab('asesoria');
+
+/* ---------- utilidades de envío ---------- */
+function selectText(el){ try{ const r=document.createRange(); r.selectNodeContents(el); const s=getSelection(); s.removeAllRanges(); s.addRange(r); }catch(e){} }
+function wireSend(prefix,getMsg){
+  const copy=$('#'+prefix+'Copy'), open=$('#'+prefix+'OpenWa'), pre=$('#'+prefix+'Wa');
+  copy.addEventListener('click',()=>{
+    const done=()=>{ copy.textContent='Copiado'; setTimeout(()=>copy.textContent='Copiar mensaje',1600); };
+    try{ navigator.clipboard.writeText(pre.textContent).then(done,()=>selectText(pre)); }catch(e){ selectText(pre); }
+  });
+  return { ready(ok){ copy.disabled=!ok;
+    if(ok && WHATSAPP_INFRACOMEX){ open.hidden=false; open.href='https://wa.me/'+WHATSAPP_INFRACOMEX+'?text='+encodeURIComponent(getMsg()); } else open.hidden=true; } };
+}
+const digits=s=>String(s||'').replace(/\D/g,'');
+const readyText=kind=>WHATSAPP_INFRACOMEX ? kind+' listo. Ábralo en WhatsApp para enviarlo.' : kind+' listo. Cópielo y envíelo por WhatsApp.';
+
+/* ---------- asesoría ---------- */
+const Af=id=>$('#a-'+id);
+function advMessage(){
+  return [
+    '*Solicitud de asesoría desde la web*',
+    `${Af('empresa').value.trim()||'(empresa por completar)'}${Af('sector').value.trim()?' · '+Af('sector').value.trim():''}`,
+    `Tema: ${Af('tema').selectedOptions[0].textContent} · Ciudades: ${Af('ciudades').value.trim()||'—'}`,
+    `Necesita decidir: ${Af('detalle').value.trim()||'(por completar)'}`,
+    `Contacto: ${Af('nombre').value.trim()||'(por completar)'} · ${Af('contacto').value.trim()||'(por completar)'}`
+  ].join('\n');
+}
+const aSend=wireSend('a',advMessage);
+function updateAdv(){ $('#aWa').textContent=advMessage(); $('#aMsg').textContent=''; aSend.ready(false); }
+$('#aForm').addEventListener('input',updateAdv); $('#aForm').addEventListener('change',updateAdv);
+$('#aForm').addEventListener('submit',e=>{
+  e.preventDefault(); const miss=[];
+  if(!Af('empresa').value.trim()) miss.push('la empresa'); if(!Af('detalle').value.trim()) miss.push('qué necesita decidir');
+  if(!Af('nombre').value.trim()) miss.push('su nombre'); if(!Af('contacto').value.trim()) miss.push('un correo o WhatsApp'); if(!Af('consent').checked) miss.push('la autorización de datos');
+  const m=$('#aMsg');
+  if(miss.length){ m.className='form-msg err'; m.textContent='Falta '+miss.join(', ')+'.'; return; }
+  updateAdv(); m.className='form-msg okm'; m.textContent=readyText('Mensaje'); aSend.ready(true);
+});
+
+/* ---------- predio ---------- */
+const P=id=>$('#p-'+id);
+function readOwner(){
+  const n=v=>{ const x=parseFloat(String(v).replace(',','.')); return isFinite(x)&&x>0?x:null; };
+  return {tipo:P('tipo').value, oferta:P('oferta').value, barrio:P('barrio').value.trim(), ciudad:P('ciudad').value.trim(),
+    area:n(P('area').value), frente:n(P('frente').value), esquina:P('esquina').value, via:P('via').value,
+    pisos:n(P('pisos').value), valor:n(P('valor').value), nombre:P('nombre').value.trim(), wa:P('wa').value.trim(), consent:P('consent').checked};
+}
+function ownerEval(o){
+  return Object.entries(FORMATS).map(([k,f])=>{
+    const [amin,,amax]=f.area, why=[];
+    if(o.area==null||o.frente==null){ if(o.area==null) why.push('falta el área'); if(o.frente==null) why.push('falta el frente'); return {k,name:f.name,status:'falta',why:why.join(' y ')}; }
+    if(o.area<amin) why.push(`área menor a ${NF.format(amin)} m²`);
+    if(o.area>amax) why.push(`área mayor a ${NF.format(amax)} m²`);
+    if(o.frente<f.frenteMin) why.push(`frente menor a ${NF.format(f.frenteMin)} m`);
+    if(why.length) return {k,name:f.name,status:'no',why:why.join(' · ')};
+    const plus=[]; if(o.esquina==='si') plus.push('la esquina suma puntos'); if(o.via==='arterial'||o.via==='colectora') plus.push('buena vía');
+    return {k,name:f.name,status:'ok',why:'Área y frente dentro del rango'+(plus.length?' · '+plus.join(' · '):'')};
+  });
+}
+const cap=s=>s?s.charAt(0).toUpperCase()+s.slice(1):'';
+function ownerMessage(o,ev){
+  const ub=[o.barrio,o.ciudad].filter(Boolean).join(', ')||'ubicación por confirmar';
+  const esq=o.esquina==='si'?'sí':o.esquina==='no'?'no':'por confirmar';
+  return [
+    '*Predio postulado desde la web*',
+    `${cap(o.tipo)||'Predio'} · ${ub}`,
+    `Área: ${o.area?NF.format(o.area)+' m²':'—'} · Frente: ${o.frente?NF1.format(o.frente)+' m':'—'} · Esquina: ${esq}`,
+    `Vía: ${VIA_LABEL[o.via]||'por confirmar'}${o.pisos?' · Pisos: '+NF.format(o.pisos):''}`,
+    `Oferta: ${o.oferta||'por confirmar'}${o.valor?' · '+COP(o.valor)+(o.oferta==='arriendo'?' al mes':''):''}`,
+    `Pre-evaluación: ${ev.map(e=>`${e.name} ${e.status==='ok'?'✔':e.status==='no'?'✖':'?'}`).join(' · ')}`,
+    `Contacto: ${o.nombre||'(por completar)'} · ${o.wa||'(por completar)'}`
+  ].join('\n');
+}
+const pSend=wireSend('p',()=>ownerMessage(readOwner(),ownerEval(readOwner())));
+function updateOwner(){
+  const o=readOwner(), ev=ownerEval(o);
+  $('#pEvals').innerHTML=ev.map(e=>`<div class="ev"><span class="pill ${e.status==='ok'?'ok':e.status==='no'?'bad':'neutral'}">${e.status==='ok'?'Compatible':e.status==='no'?'No compatible':'Falta dato'}</span><span class="nm">${esc(e.name)}</span><span class="why">${esc(e.why)}</span></div>`).join('');
+  $('#pWa').textContent=ownerMessage(o,ev);
+  $('#pMsg').textContent=''; pSend.ready(false);
+}
+$('#pForm').addEventListener('input',e=>{ if(e.target.id!=='p-texto') updateOwner(); });
+$('#pForm').addEventListener('change',e=>{ if(e.target.id!=='p-texto') updateOwner(); });
+$('#pForm').addEventListener('submit',e=>{
+  e.preventDefault();
+  const o=readOwner(), miss=[];
+  if(!o.nombre) miss.push('su nombre'); if(digits(o.wa).length<7) miss.push('un WhatsApp válido'); if(!o.consent) miss.push('la autorización de datos');
+  const m=$('#pMsg');
+  if(miss.length){ m.className='form-msg err'; m.textContent='Falta '+miss.join(', ')+'.'; pSend.ready(false); return; }
+  updateOwner(); m.className='form-msg okm'; m.textContent=readyText('Mensaje'); pSend.ready(true);
+});
+function heuristicParse(t){
+  const raw=t, s=t.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');
+  const num=x=>{ x=String(x).trim(); if(/^\d{1,3}(\.\d{3})+$/.test(x)) return Number(x.replace(/\./g,'')); return Number(x.replace(',','.')); };
+  const o={tipo:null,barrio:null,ciudad:null,area_m2:null,frente_m:null,esquina:null,pisos:null,via:null,oferta:null,valor_cop:null,nombre:null};
+  let m;
+  if((m=s.match(/\b(lote|local|casa|bodega)\b/))) o.tipo=m[1];
+  if((m=s.match(/(\d{1,3}(?:\.\d{3})+|\d+(?:,\d+)?)\s*(?:m2|m²|mts2|mt2|mts\.?\s*cuadrados|metros\s*cuadrados)/))) o.area_m2=num(m[1]);
+  if((m=s.match(/frente\s*(?:de\s*)?(?:unos\s*)?(\d+(?:[.,]\d+)?)/))) o.frente_m=num(m[1]);
+  if(/esquiner|en esquina|de esquina/.test(s)) o.esquina=true; else if(/medianer/.test(s)) o.esquina=false;
+  if((m=s.match(/(\d+)\s*pisos?\b/))) o.pisos=Number(m[1]);
+  if(/avenida|\bav\.?\s|troncal|autopista|variante/.test(s)) o.via='arterial'; else if(/(calle|via|carrera) principal/.test(s)) o.via='colectora';
+  if(/arriend|alquil|\brenta\b/.test(s)) o.oferta='arriendo'; else if(/\bvend|\bventa\b/.test(s)) o.oferta='venta';
+  if((m=s.match(/(\d+(?:[.,]\d+)?)\s*(?:millones|millon)/))) o.valor_cop=Math.round(num(m[1])*1e6);
+  else if((m=s.match(/\$\s*(\d{1,3}(?:\.\d{3})+)/))) o.valor_cop=num(m[1]);
+  if((m=raw.match(/barrio\s+([A-ZÁÉÍÓÚÑ][A-Za-zÁÉÍÓÚÑáéíóúñ]*(?:\s+(?:de\s+la\s+|del\s+|de\s+)?[A-ZÁÉÍÓÚÑ][A-Za-zÁÉÍÓÚÑáéíóúñ]*)*)/))) o.barrio=m[1];
+  else { for(const b of ['Bocagrande','Castillogrande','Manga','Crespo','Torices','El Bosque','Pie de la Popa','Olaya Herrera','Los Alpes','Getsemaní','El Cabrero','Marbella','Blas de Lezo','San Fernando']){ const bn=b.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,''); if(s.includes(bn)){o.barrio=b;break;} } }
+  if(/cartagena/.test(s)) o.ciudad='Cartagena'; else if(/barranquilla/.test(s)) o.ciudad='Barranquilla'; else if(/santa marta/.test(s)) o.ciudad='Santa Marta';
+  if((m=raw.match(/(?:[Ss]oy|[Mm]e llamo|[Mm]i nombre es)\s+([A-ZÁÉÍÓÚÑ][a-záéíóúñ]+)/))) o.nombre=m[1];
+  o.faltantes=[['area_m2','área'],['frente_m','frente'],['barrio','barrio o dirección'],['oferta','arriendo o venta'],['valor_cop','valor pretendido']].filter(([k])=>o[k]==null).map(([,l])=>l);
+  o.faltantes.push('dirección exacta','fotos');
+  return o;
+}
+function applyParsed(o){
+  const set=(id,v)=>{ if(v!==null&&v!==undefined&&v!=='') P(id).value=v; };
+  if(o.tipo&&['lote','local','casa','bodega'].includes(String(o.tipo).toLowerCase())) P('tipo').value=String(o.tipo).toLowerCase();
+  if(o.oferta&&['arriendo','venta'].includes(o.oferta)) P('oferta').value=o.oferta;
+  set('barrio',o.barrio); set('ciudad',o.ciudad);
+  set('area',isFinite(+o.area_m2)&&o.area_m2?+o.area_m2:null);
+  set('frente',isFinite(+o.frente_m)&&o.frente_m?+o.frente_m:null);
+  if(o.esquina===true) P('esquina').value='si'; else if(o.esquina===false) P('esquina').value='no';
+  if(o.via&&VIA_LABEL[o.via]) P('via').value=o.via;
+  set('pisos',isFinite(+o.pisos)&&o.pisos?+o.pisos:null);
+  set('valor',isFinite(+o.valor_cop)&&o.valor_cop?Math.round(+o.valor_cop):null);
+  set('nombre',o.nombre);
+  updateOwner();
+}
+
+/* ---------- IA (capacidad sample) ---------- */
+let SAMPLE=null;
+function aiErrCopy(code){
+  switch(code){
+    case 'not_granted': case 'sampling_disabled': case 'not_declared': case 'capability_disabled': case 'capability_removed':
+      disableAI(); return 'La IA no está disponible aquí; se usaron las reglas básicas.';
+    case 'rate_limited': return 'Demasiadas solicitudes seguidas. Intente de nuevo en un momento.';
+    case 'session_expired': return 'La sesión de Claude expiró. Vuelva a iniciar sesión e intente de nuevo.';
+    case 'refused': return 'La IA no procesó este texto. Revíselo e intente otra vez.';
+    case 'invalid_json': return 'La IA respondió en un formato inesperado. Intente de nuevo.';
+    case 'cancelled': return '';
+    default: return 'No se pudo completar. Intente de nuevo.';
+  }
+}
+function disableAI(){ SAMPLE=null; document.body.classList.remove('has-ai'); $('#pParse').textContent='Ordenar datos'; }
+(async()=>{
+  try{
+    if(!window.claude||typeof window.claude.use!=='function') return;
+    const s=await window.claude.use('sample'); if(!s) return;
+    SAMPLE=s; document.body.classList.add('has-ai'); $('#pParse').textContent='Ordenar con IA';
+  }catch(e){}
+})();
+$('#pParse').addEventListener('click',async()=>{
+  const txt=$('#p-texto').value.trim(), msg=$('#pParseMsg'), btn=$('#pParse');
+  if(!txt){ msg.textContent='Escriba o pegue primero la descripción del predio.'; return; }
+  if(SAMPLE){
+    btn.disabled=true; msg.textContent='Ordenando con IA…';
+    const prompt=`Extrae los datos de este mensaje de un propietario que ofrece un inmueble comercial en Colombia.
+Responde solo con un objeto JSON con estas claves:
+tipo ("lote"|"local"|"casa"|"bodega"|null), barrio (string|null), ciudad (string|null), area_m2 (número|null), frente_m (número|null), esquina (true|false|null), pisos (número|null), via ("local"|"colectora"|"arterial"|null; avenida o troncal = "arterial", calle o vía principal = "colectora", calle de barrio = "local"), oferta ("arriendo"|"venta"|null), valor_cop (número en pesos|null; "18 millones" = 18000000), nombre (string|null), faltantes (arreglo de textos cortos con datos importantes que no aparecen, por ejemplo "dirección exacta", "fotos").
+No inventes nada: si un dato no está en el mensaje, usa null.
+Ejemplo de forma: {"tipo":"local","barrio":"Manga","ciudad":"Cartagena","area_m2":150,"frente_m":8,"esquina":false,"pisos":1,"via":"arterial","oferta":"arriendo","valor_cop":9000000,"nombre":null,"faltantes":["fotos"]}
+
+Mensaje:
+"""${txt.slice(0,4000)}"""`;
+    try{
+      const o=await SAMPLE.json(prompt,{modelTier:'quick'});
+      if(!o||typeof o!=='object') throw {code:'invalid_json'};
+      applyParsed(o);
+      const f=Array.isArray(o.faltantes)?o.faltantes.filter(x=>typeof x==='string').slice(0,6):[];
+      msg.textContent='Ordenado con IA.'+(f.length?' Falta: '+f.join(', ')+'.':'');
+    }catch(e){
+      const note=aiErrCopy(e&&e.code);
+      if(e&&e.code==='cancelled'){ msg.textContent=''; }
+      else { const o=heuristicParse(txt); applyParsed(o); msg.textContent=(note?note+' ':'')+'Ordenado con reglas básicas. Falta: '+o.faltantes.join(', ')+'.'; }
+    }finally{ btn.disabled=false; }
+  }else{
+    const o=heuristicParse(txt); applyParsed(o);
+    msg.textContent='Ordenado con reglas básicas. Falta: '+o.faltantes.join(', ')+'.';
+  }
+});
+let fichaCtl=null;
+$('#pFicha').addEventListener('click',async()=>{
+  if(!SAMPLE) return;
+  const o=readOwner(), ev=ownerEval(o), out=$('#pFichaOut'), btn=$('#pFicha'), stop=$('#pFichaStop');
+  const datos={tipo:o.tipo||null, barrio:o.barrio||null, ciudad:o.ciudad||null, area_m2:o.area, frente_m:o.frente,
+    esquina:o.esquina==='si'?true:o.esquina==='no'?false:null, via:o.via?VIA_LABEL[o.via]:null, pisos:o.pisos, oferta:o.oferta||null, valor_cop:o.valor};
+  const pre=ev.map(e=>`${e.name}: ${e.status==='ok'?'compatible':e.status==='no'?'no compatible ('+e.why+')':'falta dato'}`).join('; ');
+  const prompt=`Eres analista de expansión comercial de Infracomex, en Cartagena (Colombia). Redacta en español una ficha breve para presentar este predio a gerentes de expansión de marcas y cadenas.
+Formato: una línea de titular; luego de 3 a 5 viñetas con "- " que den el dato y su lectura comercial; cierra con una línea que empiece por "Por confirmar:" con los datos que faltan.
+Máximo 110 palabras. Usa solo los datos dados; no inventes cifras, direcciones, población ni nombres de cadenas. Sin markdown de negritas.
+Datos del predio (JSON): ${JSON.stringify(datos)}
+Pre-evaluación por formato: ${pre}`;
+  fichaCtl=new AbortController();
+  btn.disabled=true; stop.hidden=false; out.textContent='Pensando…';
+  try{ await SAMPLE(prompt,{modelTier:'quick',signal:fichaCtl.signal,onText:({text})=>{out.textContent=text;}}); }
+  catch(e){ const note=aiErrCopy(e&&e.code); out.textContent=(e&&e.text)?e.text+(note?'\n\n'+note:''):note; }
+  finally{ btn.disabled=false; stop.hidden=true; fichaCtl=null; }
+});
+$('#pFichaStop').addEventListener('click',()=>{ if(fichaCtl) fichaCtl.abort(); });
+
+/* ---------- cadena ---------- */
+const Cf=id=>$('#c-'+id);
+const FMT_KEY={dd:'descuento_duro',fa:'farmacia',co:'conveniencia',otro:'otro'};
+function readChain(){
+  const n=v=>{const x=parseFloat(v);return isFinite(x)?x:null;};
+  return {marca:Cf('marca').value.trim(), formato:Cf('formato').value, ciudades:Cf('ciudades').value.split(',').map(s=>s.trim()).filter(Boolean),
+    amin:n(Cf('amin').value), amax:n(Cf('amax').value), fmin:n(Cf('fmin').value), esquina:Cf('esquina').value, radio:n(Cf('radio').value),
+    modelo:Cf('modelo').value, aperturas:n(Cf('aperturas').value), plazo:n(Cf('plazo').value), nombre:Cf('nombre').value.trim(), contacto:Cf('contacto').value.trim(), consent:Cf('consent').checked};
+}
+const q=s=>'"'+String(s).replace(/"/g,'\\"')+'"';
+function chainYaml(c){
+  return ['brief:',`  marca: ${q(c.marca||'(por completar)')}`,`  formato: ${FMT_KEY[c.formato]}`,`  ciudades: [${c.ciudades.join(', ')}]`,
+    `  area_m2: {min: ${c.amin??'null'}, max: ${c.amax??'null'}}`,`  frente_min_m: ${c.fmin??'null'}`,`  esquina: ${c.esquina}`,
+    `  radio_sin_competencia_m: ${c.radio??'null'}`,`  modelo: ${c.modelo}`,`  meta: {aperturas: ${c.aperturas??'null'}, plazo_meses: ${c.plazo??'null'}}`].join('\n');
+}
+function chainMessage(c){
+  return ['*Brief de expansión desde la web*',
+    `${c.marca||'(marca por completar)'} · ${Cf('formato').selectedOptions[0].textContent}`,
+    `Ciudades: ${c.ciudades.join(', ')||'—'}`,
+    `Área: ${c.amin!=null?NF.format(c.amin):'—'} a ${c.amax!=null?NF.format(c.amax):'—'} m² · Frente mínimo: ${c.fmin!=null?NF1.format(c.fmin)+' m':'—'}`,
+    `Esquina: ${c.esquina} · Radio sin competencia: ${c.radio!=null?NF.format(c.radio)+' m':'—'}`,
+    `Modelo: ${Cf('modelo').selectedOptions[0].textContent}`,
+    `Meta: ${c.aperturas!=null?NF.format(c.aperturas):'—'} aperturas en ${c.plazo!=null?NF.format(c.plazo):'—'} meses`,
+    `Contacto: ${c.nombre||'(por completar)'} · ${c.contacto||'(por completar)'}`].join('\n');
+}
+const cSend=wireSend('c',()=>chainMessage(readChain()));
+function updateChain(){
+  const c=readChain();
+  $('#cYaml').textContent=chainYaml(c);
+  $('#cNote').textContent= c.ciudades.some(x=>/cartagena/i.test(x)) ? 'En Cartagena, el motor aplicará estas reglas a los 153.672 predios calificables del catastro.' : 'El Radar empieza por Cartagena; las demás ciudades se trabajan con búsqueda en campo mientras se incorporan.';
+  $('#cWa').textContent=chainMessage(c); $('#cMsg').textContent=''; cSend.ready(false);
+}
+$('#cForm').addEventListener('input',updateChain); $('#cForm').addEventListener('change',updateChain);
+$('#cForm').addEventListener('submit',e=>{
+  e.preventDefault(); const c=readChain(), miss=[];
+  if(!c.marca) miss.push('la marca'); if(!c.nombre) miss.push('su nombre'); if(!c.contacto) miss.push('un correo o WhatsApp'); if(!c.consent) miss.push('la autorización de datos');
+  const m=$('#cMsg');
+  if(miss.length){ m.className='form-msg err'; m.textContent='Falta '+miss.join(', ')+'.'; return; }
+  m.className='form-msg okm'; m.textContent=readyText('Brief'); cSend.ready(true);
+});
+
+/* ---------- inversión ---------- */
+const If=id=>$('#i-'+id);
+function investMessage(){
+  const t=id=>If(id).selectedOptions?If(id).selectedOptions[0].textContent:If(id).value;
+  return ['*Interés de inversión desde la web*',
+    `Capital: ${t('capital')} · Ciudad: ${If('ciudad').value.trim()||'—'}`,
+    `Modelo: ${t('modelo')} · Horizonte: ${t('horizonte')}`,
+    `Residencia: ${If('pais').value.trim()||'—'} · Propuesta en: ${t('idioma')}`,
+    `Contacto: ${If('nombre').value.trim()||'(por completar)'} · ${If('contacto').value.trim()||'(por completar)'}`].join('\n');
+}
+const iSend=wireSend('i',investMessage);
+function updateInvest(){ $('#iWa').textContent=investMessage(); $('#iMsg').textContent=''; iSend.ready(false); }
+$('#iForm').addEventListener('input',updateInvest); $('#iForm').addEventListener('change',updateInvest);
+$('#iForm').addEventListener('submit',e=>{
+  e.preventDefault(); const miss=[];
+  if(!If('nombre').value.trim()) miss.push('su nombre'); if(!If('contacto').value.trim()) miss.push('un correo o WhatsApp'); if(!If('consent').checked) miss.push('la autorización de datos');
+  const m=$('#iMsg');
+  if(miss.length){ m.className='form-msg err'; m.textContent='Falta '+miss.join(', ')+'.'; return; }
+  m.className='form-msg okm'; m.textContent=readyText('Mensaje'); iSend.ready(true);
+});
+
+/* ---------- arranque ---------- */
+buildExamples(); syncControls(); renderSim();
+applyParsed(heuristicParse($('#p-texto').value));
+$('#pParseMsg').textContent='Datos del ejemplo ya ordenados. Cambie el mensaje y pulse el botón.';
+updateAdv(); updateChain(); updateInvest();
+})();
+</script>
